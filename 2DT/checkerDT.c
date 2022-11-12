@@ -17,6 +17,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode) {
    Node_T oNParent;
    Path_T oPNPath;
    Path_T oPPPath;
+   size_t identifier;
 
    /* Sample check: a NULL pointer is not a valid node */
    if(oNNode == NULL) {
@@ -38,6 +39,26 @@ boolean CheckerDT_Node_isValid(Node_T oNNode) {
          return FALSE;
       }
    }
+
+   /* Check 1: Node_compare works, i.e. the function applied to two
+      referances to the current node return 0 */
+   if(Node_compare(oNNode, oNNode) != 0) {
+      fprintf(stderr, "Node_compare not valid.");
+      return FALSE;
+   }
+
+   /* Check 2: Current Node is identified as its parent's child
+      by the Node_hasChild function
+   */ 
+   if (!Node_hasChild(oNParent, oPNPath, &identifier)){
+      fprintf(stderr, "Node_hasChild does not recognize 
+         node as parent's child.");  
+         return FALSE:
+   }
+
+
+
+
 
    return TRUE;
 }
