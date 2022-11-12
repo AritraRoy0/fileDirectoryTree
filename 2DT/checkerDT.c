@@ -51,8 +51,8 @@ boolean CheckerDT_Node_isValid(Node_T oNNode) {
       by the Node_hasChild function
    */ 
    if (!Node_hasChild(oNParent, oPNPath, &identifier)){
-      fprintf(stderr, "Node_hasChild does not recognize 
-         node as a child of its parent node.");  
+      fprintf(stderr, "Node_hasChild does not recognize" 
+         "node as a child of its parent node.");  
          return FALSE;
    }
 
