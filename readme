@@ -3,11 +3,13 @@ Assignment 4 readme File
 ------------------------------------------------------------------------
 Student 1: What is your name?
 
+Aritra Roy Mazumder
 
 
 ------------------------------------------------------------------------
 Student 2: What is your name?
 
+None
 
 
 ------------------------------------------------------------------------
@@ -19,6 +21,7 @@ readme file, and edit it as appropriate.
 
 
 
+
 ------------------------------------------------------------------------
 Student 2: What authorized sources of information did you use to
 complete the assignment? COPY THE LIST of authorized sources of
@@ -26,7 +29,7 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -40,6 +43,7 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
+None
 
 
 ------------------------------------------------------------------------
@@ -54,19 +58,20 @@ nature of the interaction, may additionally require the interaction
 being reported to the Committee on Discipline. Write "None" if you used
 no unauthorized sources of information.
 
-
+None
 
 ------------------------------------------------------------------------
 Student 1: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+This was a very challangening assignment and I did not expect to 
+struggle this hard at it.
 
 ------------------------------------------------------------------------
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-
+None
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -117,11 +122,11 @@ the error manifests itself or is "noticed" by the client.
 
       Executable         Function with the underlying error
 ===============================================================
-         ./bdtBad1        
+         ./bdtBad1        BDT_insert
 ---------------------------------------------------------------
-         ./bdtBad2        
+         ./bdtBad2        BDT_freeSubtree
 ---------------------------------------------------------------
-         ./bdtBad3        
+         ./bdtBad3        BDT_addChild
 ---------------------------------------------------------------
          ./bdtBad4        
 ---------------------------------------------------------------
