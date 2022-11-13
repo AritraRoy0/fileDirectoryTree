@@ -75,6 +75,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
 static boolean CheckerDT_treeCheck(Node_T oNNode)
 {
    size_t ulIndex, ulIndex2;
+   Node siblingNode;
 
    if (oNNode != NULL)
    {
@@ -100,11 +101,18 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          for (ulIndex2 = 0; ulIndex2 < Node_getNumChildren(oNNode); ulIndex2++)
          {
             /* Check 1: file paths are unique for nodes in same directory */
-            if (ulIndex == ulIndex2) {
+            if (ulIndex == ulIndex2)
+            {
                continue;
             }
-            Node_T siblingNode = NULL;
-            int iStatus = Node_getChild(oNNode, ulIndex2, &siblingNode);
+            siblingNode = NULL;
+            iStatus = Node_getChild(oNNode, ulIndex2, &siblingNode);
+                  /* Check 0: Check if number of grandchildren and no. of children returned are same */
+            if (iStatus != SUCCESS)
+            {
+               fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
+               return FALSE;
+            }
             if (!Path_comparePath(Node_getPath(oNChild), Node_getPath(siblingNode)))
             {
                fprintf(stderr, "sibling nodes have duplicate path names\n");
