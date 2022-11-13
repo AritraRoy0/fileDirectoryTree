@@ -161,7 +161,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
       if (*acCount > ulCount)
       {
          fprintf(stderr, "There are more directories than ulCount indicates\n");
-         free(acCount);
          return FALSE;
       }
    }
@@ -186,6 +185,8 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    *acCount = 0;
    if (oNRoot != NULL)
       *acCount = 1;
+   else
+      free(acCount);
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot, ulCount, acCount);
