@@ -152,6 +152,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild, ulCount, acCount))
+            free(acCount);
             return FALSE;
       }
 
@@ -159,19 +160,11 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
 
       if (*acCount > ulCount) {
          fprintf(stderr, "There are more directories than ulCount indicates\n");
-         return FALSE;
-      }
-
-      siblingNode = NULL;
-      iStatus = Node_getChild(oNNode, ulIndex, &siblingNode);
-      /* Check 3: Check no extra nodes left (exceeds dynamic array of children) */
-      if (iStatus == SUCCESS)
-      {
-         fprintf(stderr, "There are more child nodes than "
-                         "Node_getNumChildren indicades\n");
+         free(acCount);
          return FALSE;
       }
    }
+   free(acCount);
    return TRUE;
 }
 
