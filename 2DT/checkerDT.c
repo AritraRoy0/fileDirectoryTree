@@ -187,6 +187,7 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
          fprintf(stderr, "Not initialized, but count is not 0\n");
          return FALSE;
       }
+   acCount = malloc(sizeof(size_t));
    *acCount = 0;
    if (oNRoot != NULL)
       *acCount = 1;
