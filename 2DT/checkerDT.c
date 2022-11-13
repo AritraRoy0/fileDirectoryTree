@@ -17,7 +17,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    Path_T oPNPath;
    Path_T oPPPath;
    size_t identifier;
-   int ulIndex;
+   size_t ulIndex;
 
    /* Sample check: a NULL pointer is not a valid node */
    if (oNNode == NULL)
