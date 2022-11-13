@@ -19,8 +19,6 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    Path_T oPPPath;
    size_t identifier;
 
-   
-
    /* Sample check: a NULL pointer is not a valid node */
    if (oNNode == NULL)
    {
@@ -152,13 +150,16 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild, ulCount, acCount))
+         {
             free(acCount);
             return FALSE;
+         }
       }
 
       /* Check 4: Accumilative count of directories can't be greater than ulCount */
 
-      if (*acCount > ulCount) {
+      if (*acCount > ulCount)
+      {
          fprintf(stderr, "There are more directories than ulCount indicates\n");
          free(acCount);
          return FALSE;
@@ -185,7 +186,6 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    *acCount = 0;
    if (oNRoot != NULL)
       *acCount = 1;
-   
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot, ulCount, acCount);
