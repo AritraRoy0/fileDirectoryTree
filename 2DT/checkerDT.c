@@ -13,11 +13,12 @@
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T oNNode)
 {
-   Node_T oNParent;
+   Node_T oNParent, oNChild;
    Path_T oPNPath;
    Path_T oPPPath;
    size_t identifier;
    size_t ulIndex;
+   
 
    /* Sample check: a NULL pointer is not a valid node */
    if (oNNode == NULL)
@@ -63,7 +64,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
 
    for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
    {
-      Node_T oNChild = NULL;
+      oNChild = NULL;
       int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
 
       /* Check 3: Check if getNumChildren  and no. of children returned are same */
