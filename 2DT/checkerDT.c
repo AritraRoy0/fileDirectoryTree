@@ -63,25 +63,6 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
       return FALSE;
    }
 
-   for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
-   {
-      oNChild = NULL;
-      iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
-
-      /* Check 3: Check if getNumChildren  and no. of children returned are same */
-      if (iStatus != SUCCESS)
-      {
-         fprintf(stderr, "Node_getNumChildren claims more children than getChild returns\n");
-         return FALSE;
-      }
-   }
-   if (Node_getChild(oNNode, ulIndex, &oNChild) == SUCCESS)
-   {
-      fprintf(stderr, "There are more child nodes than "
-                      "Node_getNumChildren indicades\n");
-      return FALSE;
-   }
-
    return TRUE;
 }
 
@@ -94,7 +75,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    parameter list to facilitate constructing your checks.
    If you do, you should update this function comment.
 */
-static boolean CheckerDT_treeCheck(Node_T oNNode)
+static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCount)
 {
    size_t ulIndex, ulIndex2;
    Node_T siblingNode;
@@ -113,6 +94,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       {
          Node_T oNChild = NULL;
          iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
+         *acCount += 1;
 
          /* Check 0: Check if number of grandchildren and no. of children returned are same */
          if (iStatus != SUCCESS)
@@ -169,8 +151,15 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if (!CheckerDT_treeCheck(oNChild))
+         if (!CheckerDT_treeCheck(oNChild, ulCount, acCount))
             return FALSE;
+      }
+
+      /* Check 4: Accumilative count of directories can't be greater than ulCount */
+
+      if (*acCount > ulCount) {
+         fprintf(stderr, "There are more directories than ulCount indicates\n");
+         return FALSE;
       }
 
       siblingNode = NULL;
@@ -190,7 +179,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
                           size_t ulCount)
 {
-
+   size_t *acCount;
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0. */
    if (!bIsInitialized)
@@ -200,6 +189,9 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
          return FALSE;
       }
 
+   if (oNRoot != NULL)
+      *acCount = 1;
+
    /* Now checks invariants recursively at each node from the root. */
-   return CheckerDT_treeCheck(oNRoot);
+   return CheckerDT_treeCheck(oNRoot, ulCount, acCount);
 }
