@@ -73,6 +73,12 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
          return FALSE;
       }
    }
+   if (Node_getChild(oNNode, ulIndex, &oNChild) == SUCCESS)
+   {
+      fprintf(stderr, "There are more child nodes than "
+                      "Node_getNumChildren indicades\n");
+      return FALSE;
+   }
 
    return TRUE;
 }
