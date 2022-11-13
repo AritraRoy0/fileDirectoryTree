@@ -13,12 +13,11 @@
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T oNNode)
 {
-   Node_T oNParent, oNChild;
+   Node_T oNParent;
    Path_T oPNPath;
    Path_T oPPPath;
    size_t identifier;
-   size_t ulIndex;
-   int iStatus;
+
    
 
    /* Sample check: a NULL pointer is not a valid node */
@@ -188,11 +187,10 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
          fprintf(stderr, "Not initialized, but count is not 0\n");
          return FALSE;
       }
-
+   *acCount = 0;
    if (oNRoot != NULL)
       *acCount = 1;
-   else
-      *acCount = 0;
+   
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot, ulCount, acCount);
