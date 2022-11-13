@@ -75,7 +75,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
 static boolean CheckerDT_treeCheck(Node_T oNNode)
 {
    size_t ulIndex, ulIndex2;
-   Node siblingNode;
+   Node_T siblingNode;
    int pathCompare;
 
    if (oNNode != NULL)
