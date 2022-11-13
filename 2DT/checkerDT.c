@@ -76,7 +76,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 {
    size_t ulIndex, ulIndex2;
    Node_T siblingNode;
-   int pathCompare;
+   int pathCompare, iStatus;
 
    if (oNNode != NULL)
    {
@@ -90,7 +90,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
          Node_T oNChild = NULL;
-         int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
+         iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
 
          /* Check 0: Check if number of grandchildren and no. of children returned are same */
          if (iStatus != SUCCESS)
