@@ -150,6 +150,16 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
       }
+
+      siblingNode = NULL;
+      iStatus = Node_getChild(oNNode, ulIndex, &siblingNode);
+      /* Check 3: Check no extra nodes left (exceeds dynamic array of children) */
+      if (iStatus == SUCCESS)
+      {
+         fprintf(stderr, "There are more child nodes than "
+                         "Node_getNumChildren indicades\n");
+         return FALSE;
+      }
    }
    return TRUE;
 }
