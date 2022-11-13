@@ -18,6 +18,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    Path_T oPPPath;
    size_t identifier;
    size_t ulIndex;
+   int iStatus;
    
 
    /* Sample check: a NULL pointer is not a valid node */
@@ -65,7 +66,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
    {
       oNChild = NULL;
-      int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
+      iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
 
       /* Check 3: Check if getNumChildren  and no. of children returned are same */
       if (iStatus != SUCCESS)
