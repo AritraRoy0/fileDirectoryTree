@@ -191,6 +191,8 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 
    if (oNRoot != NULL)
       *acCount = 1;
+   else
+      *acCount = 0;
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot, ulCount, acCount);
