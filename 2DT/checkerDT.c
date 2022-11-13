@@ -173,7 +173,7 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
                           size_t ulCount)
 {
    size_t *acCount;
-   Boolean ret = FALSE;
+   boolean ret = FALSE;
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0. */
    if (!bIsInitialized)
@@ -190,5 +190,5 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    /* Now checks invariants recursively at each node from the root. */
    ret = CheckerDT_treeCheck(oNRoot, ulCount, acCount);
    free(acCount);
-   return 
+   return ret;
 }
