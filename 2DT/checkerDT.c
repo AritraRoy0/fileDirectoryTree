@@ -76,6 +76,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 {
    size_t ulIndex, ulIndex2;
    Node siblingNode;
+   int pathCompare;
 
    if (oNNode != NULL)
    {
@@ -104,23 +105,45 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             if (ulIndex == ulIndex2)
             {
                continue;
+               /* for sibling nodes before current child */
             }
+
             siblingNode = NULL;
             iStatus = Node_getChild(oNNode, ulIndex2, &siblingNode);
-                  /* Check 0: Check if number of grandchildren and no. of children returned are same */
+            /* Check 0: Check if number of grandchildren and no. of children returned are same */
             if (iStatus != SUCCESS)
             {
                fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
                return FALSE;
             }
-            if (!Path_comparePath(Node_getPath(oNChild), Node_getPath(siblingNode)))
+            pathCompare = Path_comparePath(Node_getPath(oNChild), Node_getPath(siblingNode));
+            if (!pathCompare)
             {
                fprintf(stderr, "sibling nodes have duplicate path names\n");
                return FALSE;
             }
-         }
+            /* Check 2: check all children are in alphabetical order */
+            /* for sibling nodes after current child */
+            if (ulIndex2 < ulIndex)
+            {
 
-         /* Check 2: */
+               if (pathCompare < 0)
+               {
+                  fprintf(stderr, "sibling nodes not in alphabetical order\n");
+                  return FALSE;
+               }
+
+               /* for sibling nodes after current child */
+            }
+            else
+            {
+               if (pathCompare > 0)
+               {
+                  fprintf(stderr, "sibling nodes not in alphabetical order\n");
+                  return FALSE;
+               }
+            }
+         }
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
