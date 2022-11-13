@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "checkerDT.h"
 #include "dynarray.h"
 #include "path.h"
