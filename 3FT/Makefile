@@ -5,16 +5,19 @@
 
 CC=gcc217
 
-all: sampleft
+all: ft
 
 clean:
-	rm -f sampleft
+	rm -f ft
 
 clobber: clean
 	rm -f ft_client.o *~
 
-sampleft: sampleft.o ft_client.o
-	$(CC) sampleft.o ft_client.o -o sampleft
+ft: ft.o ft_client.o
+	$(CC) ft.o ft_client.o -o ft
 
 ft_client.o: ft_client.c ft.h a4def.h
 	$(CC) -c ft_client.c
+
+ft.o: ft.c dirNode.h fileNode.h a4def.h
+	$(CC) -c ft.c

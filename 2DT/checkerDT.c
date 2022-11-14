@@ -151,7 +151,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild, ulCount, acCount))
          {
-            
+
             return FALSE;
          }
       }
@@ -164,7 +164,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCoun
          return FALSE;
       }
    }
-   
+
    return TRUE;
 }
 
