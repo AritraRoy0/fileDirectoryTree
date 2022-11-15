@@ -3,14 +3,12 @@
 /* Author: Roy Mazumder & Roshaan Khalid                              */
 /*--------------------------------------------------------------------*/
 
-
 #ifndef NODE_INCLUDED
 #define NODE_INCLUDED
 
 #include <stddef.h>
 #include "a4def.h"
 #include "path.h"
-
 
 /* A Dir_T is a directory node in a Directory Tree */
 typedef struct dirNode *Dir_T;
@@ -29,7 +27,6 @@ typedef struct dirNode *Dir_T;
 */
 int Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult);
 
-
 /*
   Destroys and frees all memory allocated for the subtree rooted at
   oNNode, i.e., deletes this node and all its descendents. Returns the
@@ -39,9 +36,8 @@ size_t Dir_free(Dir_T oNNode);
 
 /* Returns the path object representing oNNode's absolute path. */
 Path_T Dir_getPath(Dir_T oNNode);
-
 /* Returns the number of children that oNParent has. */
-size_t Dir_getNumChildren(Dir_T oNParent);
+size_t Dir_getNumSubDirs(Dir_T oNParent);
 
 /*
   Returns an int SUCCESS status and sets *poNResult to be the child
@@ -49,8 +45,20 @@ size_t Dir_getNumChildren(Dir_T oNParent);
   Otherwise, sets *poNResult to NULL and returns status:
   * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
 */
-int Dir_getChild(Dir_T oNParent, size_t ulChildID,
+int Dir_getSubDir(Dir_T oNParent, size_t ulChildID,
                   Dir_T *poNResult);
+
+/* Returns the number of children that oNParent has. */
+size_t Dir_getNumFiles(Dir_T oNParent);
+
+/*
+  Returns an int SUCCESS status and sets *poNResult to be the child
+  node of oNParent with identifier ulChildID, if one exists.
+  Otherwise, sets *poNResult to NULL and returns status:
+  * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
+*/
+int Dir_getFile(Dir_T oNParent, size_t ulChildID,
+                Dir_T *poNResult);
 
 /*
   Returns a the parent node of oNNode.
@@ -58,5 +66,28 @@ int Dir_getChild(Dir_T oNParent, size_t ulChildID,
 */
 Dir_T Dir_getParent(Dir_T oNNode);
 
+/* Returns the number of children that oNParent has. */
+size_t Dir_addSubDir(Dir_T oNParent);
+
+/*
+  Returns an int SUCCESS status and sets *poNResult to be the child
+  node of oNParent with identifier ulChildID, if one exists.
+  Otherwise, sets *poNResult to NULL and returns status:
+  * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
+*/
+int Dir_rmSubDir(Dir_T oNParent, size_t ulChildID,
+                  Dir_T *poNResult);
+
+/* Returns the number of children that oNParent has. */
+size_t Dir_addFile(Dir_T oNParent);
+
+/*
+  Returns an int SUCCESS status and sets *poNResult to be the child
+  node of oNParent with identifier ulChildID, if one exists.
+  Otherwise, sets *poNResult to NULL and returns status:
+  * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
+*/
+int Dir_rmFile(Dir_T oNParent, size_t ulChildID,
+                Dir_T *poNResult);
 
 #endif

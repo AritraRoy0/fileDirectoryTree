@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
-/* fileNode.c                                                           */
-/* Author: Christopher Moretti                                        */
+/* fileNode.c                                                         */
+/* Author: Roy Mazumder and Roshaan Khalid                            */
 /*--------------------------------------------------------------------*/
 
 #include <stdlib.h>
