@@ -58,7 +58,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    int iStatus;
 
    assert(oPPath != NULL);
-   assert(oNParent == NULL); //
+   assert(oNParent == NULL);
 
    /* allocate space for a new node */
    psNew = malloc(sizeof(struct fileNode));
@@ -132,7 +132,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    /* Link into parent's children list */
    if (oNParent != NULL)
    {
-      iStatus = Node_addChild(oNParent, psNew, ulIndex);
+      iStatus = Dir_addFile(oNParent, psNew, ulIndex);
       if (iStatus != SUCCESS)
       {
          Path_free(psNew->oPPath);
@@ -144,7 +144,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
 
    *poNResult = psNew;
 
-   assert(oNParent == NULL);
+   
 
    return SUCCESS;
 }
