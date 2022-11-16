@@ -35,6 +35,11 @@ int File_compare(File_T oNFirst, File_T oNSecond) {
    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
 
+int Node_compareString(const File_T oNFirst, const char *pcSecond){
+   assert(oNFirst != NULL);
+   assert(pcSecond != NULL);
+   return Path_compareString(oNFirst->oPPath, pcSecond);
+}
 
 /*
   Creates a new node in the Directory Tree, with path oPPath and
