@@ -109,6 +109,14 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
          *poNResult = NULL;
          return NO_SUCH_PATH;
       }
+      /* parent must not already have child with this path */
+        if (Dir_hasChild(oNParent, oPPath, &ulIndex))
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return ALREADY_IN_TREE;
+        }
    }
    else
    {
@@ -149,9 +157,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
 
    *poNResult = psNew;
 
-   
-
-   return SUCCESS;
+      return SUCCESS;
 }
 
 /*

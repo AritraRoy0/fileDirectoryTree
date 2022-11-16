@@ -95,7 +95,7 @@ Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
         }
 
         /* parent must not already have child with this path */
-        if (Node_hasChild(oNParent, oPPath, &ulIndex))
+        if (Dir_hasChild(oNParent, oPPath, &ulIndex))
         {
             Path_free(psNew->oPPath);
             free(psNew);
@@ -300,4 +300,30 @@ int Dir_compare(Dir_T oNFirst, Dir_T oNSecond)
     assert(oNSecond != NULL);
 
     return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
+}
+
+boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
+{
+    assert(oNParent != NULL);
+    assert(oPPath != NULL);
+    assert(pulChildID != NULL);
+
+    boolean ret1, ret2;
+
+    /* *pulChildID is the index into oNParent->oDChildren */
+    ret1 = DynArray_bsearch(oNParent->subDirs,
+                            (char *)Path_getPathname(oPPath), pulChildID,
+                            (int (*)(const void *, const void *))Dir_compareString);
+    ret2 = DynArray_bsearch(oNParent->files,
+                            (char *)Path_getPathname(oPPath), pulChildID,
+                            (int (*)(const void *, const void *))File_compareString);
+    return ret1 || ret2;
+}
+
+static int Dir_compareString(const Dir_T oNFirst,
+                                 const char *pcSecond) {
+   assert(oNFirst != NULL);
+   assert(pcSecond != NULL);
+
+   return Path_compareString(oNFirst->oPPath, pcSecond);
 }
