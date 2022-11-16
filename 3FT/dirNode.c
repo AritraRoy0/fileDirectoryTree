@@ -12,7 +12,7 @@
 #include "checkerDT.h"
 
 /* A file node in a DT */
-struct node
+struct dirNode
 {
     /* the object corresponding to the node's absolute path */
     Path_T path;
@@ -37,16 +37,161 @@ struct node
   * ALREADY_IN_TREE if oNParent already has a child with this path
 */
 int
-Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult);
+Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
+{
+    struct dirNode *psNew;
+    Path_T oPParentPath = NULL;
+    Path_T oPNewPath = NULL;
+    size_t ulParentDepth;
+    size_t ulIndex;
+    int iStatus;
+
+    assert(oPPath != NULL);
+    assert(oNParent == NULL);
+
+    /* allocate space for a new node */
+    psNew = malloc(sizeof(struct dirNode));
+    if (psNew == NULL)
+    {
+        *poNResult = NULL;
+        return MEMORY_ERROR;
+    }
+
+    /* set the new node's path */
+    iStatus = Path_dup(oPPath, &oPNewPath);
+    if (iStatus != SUCCESS)
+    {
+        free(psNew);
+        *poNResult = NULL;
+        return iStatus;
+    }
+    psNew->oPPath = oPNewPath;
+
+    /* validate and set the new node's parent */
+    if (oNParent != NULL)
+    {
+        size_t ulSharedDepth;
+
+        oPParentPath = oNParent->oPPath;
+        ulParentDepth = Path_getDepth(oPParentPath);
+        ulSharedDepth = Path_getSharedPrefixDepth(psNew->oPPath,
+                                                  oPParentPath);
+        /* parent must be an ancestor of child */
+        if (ulSharedDepth < ulParentDepth)
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return CONFLICTING_PATH;
+        }
+
+        /* parent must be exactly one level up from child */
+        if (Path_getDepth(psNew->oPPath) != ulParentDepth + 1)
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return NO_SUCH_PATH;
+        }
+
+        /* parent must not already have child with this path */
+        if (Node_hasChild(oNParent, oPPath, &ulIndex))
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return ALREADY_IN_TREE;
+        }
+    }
+    else
+    {
+        /* new node must be root */
+        /* can only create one "level" at a time */
+        if (Path_getDepth(psNew->oPPath) != 1)
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return NO_SUCH_PATH;
+        }
+    }
+    psNew->oNParent = oNParent;
+
+    /* initialize the new node */
+    psNew->subDirs = DynArray_new(0);
+    psNew->files = DynArray_new(0);
+    if (psNew->oDChildren == NULL)
+    {
+        Path_free(psNew->oPPath);
+        free(psNew);
+        *poNResult = NULL;
+        return MEMORY_ERROR;
+    }
+
+    /* Link into parent's children list */
+    if (oNParent != NULL)
+    {
+        iStatus = Dir_addDir(oNParent, psNew, ulIndex);
+        if (iStatus != SUCCESS)
+        {
+            Path_free(psNew->oPPath);
+            free(psNew);
+            *poNResult = NULL;
+            return iStatus;
+        }
+    }
+
+    *poNResult = psNew;
+
+    return SUCCESS;
+}
 
 /*
   Destroys and frees all memory allocated for the subtree rooted at
   oNNode, i.e., deletes this node and all its descendents. Returns the
   number of nodes deleted.
 */
-size_t Dir_free(Dir_T oNNode);
+size_t Dir_free(Dir_T oNNode)
+{
+    size_t ulIndex;
+    size_t ulCount = 0;
 
-/* Returns the path object representing oNNode's absolute path. */
+    assert(oNNode != NULL);
+
+    /* remove from parent's list */
+    if (oNNode->oNParent != NULL)
+    {
+        if (DynArray_bsearch(
+                oNNode->oNParent->subDirs,
+                oNNode, &ulIndex,
+                (int (*)(const void *, const void *))Dir_compare))
+            (void)DynArray_removeAt(oNNode->oNParent->subDirs,
+                                    ulIndex);
+    }
+    /* remove all files */
+    while (DynArray_getLength(oNNode->files) != 0)
+    {
+        (void)File_free(DynArray_get(oNNode->files, 0));
+        ulCount++;
+    }
+    /* recursively remove subDirs */
+    while (DynArray_getLength(oNNode->subDirs) != 0)
+    {
+        ulCount += Dir_free(DynArray_get(oNNode->subDirs, 0));
+    }
+    DynArray_free(oNNode->files);
+    DynArray_free(oNNode->subDirs);
+
+    /* remove path */
+    Path_free(oNNode->oPPath);
+
+    /* finally, free the struct node */
+    free(oNNode);
+    ulCount++;
+    return ulCount;
+}
+
+/*-------------------------------------------------------*/
 Path_T Dir_getPath(Dir_T oNNode)
 {
 
@@ -55,10 +200,7 @@ Path_T Dir_getPath(Dir_T oNNode)
     return oNNode->path;
 }
 
-/*
-  Returns a the parent node of oNNode.
-  Returns NULL if oNNode is the root and thus has no parent.
-*/
+/*-------------------------------------------------------*/
 Dir_T Dir_getParent(Dir_T oNNode)
 {
     assert(oNNode != NULL);
@@ -66,7 +208,7 @@ Dir_T Dir_getParent(Dir_T oNNode)
     return oNNode->parentDir;
 }
 
-/* Returns the number of children that oNParent has. */
+/*-------------------------------------------------------*/
 size_t Dir_getNumSubDirs(Dir_T oNParent)
 {
     assert(oNParent != NULL);
@@ -74,12 +216,7 @@ size_t Dir_getNumSubDirs(Dir_T oNParent)
     return DynArray_getLength(oNParent->subDirs);
 }
 
-/*
-  Returns an int SUCCESS status and sets *poNResult to be the child
-  node of oNParent with identifier ulChildID, if one exists.
-  Otherwise, sets *poNResult to NULL and returns status:
-  * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
-*/
+/*-------------------------------------------------------*/
 int Dir_getSubDir(Dir_T oNParent, size_t ulChildID,
                   Dir_T *poNResult)
 {
@@ -87,7 +224,7 @@ int Dir_getSubDir(Dir_T oNParent, size_t ulChildID,
     assert(poNResult != NULL);
 
     /* ulChildID is the index into oNParent->oDChildren */
-    if (ulChildID >= Node_getNumSubDirs(oNParent))
+    if (ulChildID >= Dir_getNumSubDirs(oNParent))
     {
         *poNResult = NULL;
         return NO_SUCH_PATH;
@@ -99,7 +236,7 @@ int Dir_getSubDir(Dir_T oNParent, size_t ulChildID,
     }
 }
 
-/* Returns the number of children that oNParent has. */
+/*-------------------------------------------------------*/
 size_t Dir_getNumFiles(Dir_T oNParent)
 {
     assert(oNParent != NULL);
@@ -107,12 +244,8 @@ size_t Dir_getNumFiles(Dir_T oNParent)
     return DynArray_getLength(oNParent->files);
 }
 
-/*
-  Returns an int SUCCESS status and sets *poNResult to be the child
-  node of oNParent with identifier ulChildID, if one exists.
-  Otherwise, sets *poNResult to NULL and returns status:
-  * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
-*/
+/*-------------------------------------------------------*/
+
 int Dir_getFile(Dir_T oNParent, size_t ulChildID,
                 Dir_T *poNResult)
 {
@@ -131,4 +264,40 @@ int Dir_getFile(Dir_T oNParent, size_t ulChildID,
         *poNResult = DynArray_get(oNParent->files, ulChildID);
         return SUCCESS;
     }
+}
+
+/*
+  Links new Dir_T oNChild into oNParent's children array at index
+  ulIndex. Returns SUCCESS if the new sub dir child was added successfully,
+  or  MEMORY_ERROR if allocation fails adding oNChild to the array.
+*/
+static int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
+{
+    assert(oNParent != NULL);
+    assert(oNChild != NULL);
+
+    if (DynArray_addAt(oNParent->subDirs, ulIndex, oNChild))
+        return SUCCESS;
+    else
+        return MEMORY_ERROR;
+}
+
+/* Returns the number of children that oNParent has. */
+static int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
+{
+    assert(oNParent != NULL);
+    assert(oNChild != NULL);
+
+    if (DynArray_addAt(oNParent->files, ulIndex, oNChild))
+        return SUCCESS;
+    else
+        return MEMORY_ERROR;
+}
+
+int Dir_compare(Dir_T oNFirst, Dir_T oNSecond)
+{
+    assert(oNFirst != NULL);
+    assert(oNSecond != NULL);
+
+    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
