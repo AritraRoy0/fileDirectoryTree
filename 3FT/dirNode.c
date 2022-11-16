@@ -247,7 +247,7 @@ size_t Dir_getNumFiles(Dir_T oNParent)
 /*-------------------------------------------------------*/
 
 int Dir_getFile(Dir_T oNParent, size_t ulChildID,
-                Dir_T *poNResult)
+                File_T *poNResult)
 {
 
     assert(oNParent != NULL);
