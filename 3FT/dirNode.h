@@ -76,7 +76,7 @@ size_t Dir_addSubDir(Dir_T oNParent);
   * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
 */
 int Dir_rmSubDir(Dir_T oNParent, size_t ulChildID,
-                  Dir_T *poNResult);
+                 Dir_T *poNResult);
 
 /* Returns the number of children that oNParent has. */
 size_t Dir_addFile(Dir_T oNParent);
@@ -88,6 +88,9 @@ size_t Dir_addFile(Dir_T oNParent);
   * NO_SUCH_PATH if ulChildID is not a valid child for oNParent
 */
 int Dir_rmFile(Dir_T oNParent, size_t ulChildID,
-                Dir_T *poNResult);
+               Dir_T *poNResult);
+
+boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
+
 
 #endif

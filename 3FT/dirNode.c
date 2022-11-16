@@ -321,9 +321,10 @@ boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
 }
 
 static int Dir_compareString(const Dir_T oNFirst,
-                                 const char *pcSecond) {
-   assert(oNFirst != NULL);
-   assert(pcSecond != NULL);
+                             const char *pcSecond)
+{
+    assert(oNFirst != NULL);
+    assert(pcSecond != NULL);
 
-   return Path_compareString(oNFirst->oPPath, pcSecond);
+    return Path_compareString(oNFirst->oPPath, pcSecond);
 }
