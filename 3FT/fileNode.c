@@ -25,6 +25,17 @@ struct fileNode
    size_t conLen;
 };
 
+
+
+
+int File_compare(File_T oNFirst, File_T oNSecond) {
+   assert(oNFirst != NULL);
+   assert(oNSecond != NULL);
+
+   return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
+}
+
+
 /*
   Creates a new node in the Directory Tree, with path oPPath and
   parent oNParent. Returns an int SUCCESS status and sets *poNResult
@@ -39,7 +50,7 @@ struct fileNode
 */
 int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
 {
-   struct File_T *psNew;
+   struct fileNode *psNew;
    Path_T oPParentPath = NULL;
    Path_T oPNewPath = NULL;
    size_t ulParentDepth;
@@ -109,8 +120,8 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    psNew->oNParent = oNParent;
 
    /* initialize the new node */
-   psNew->oDChildren = DynArray_new(0);
-   if (psNew->oDChildren == NULL)
+   psNew->files = DynArray_new(0);
+   if (psNew->files == NULL)
    {
       Path_free(psNew->oPPath);
       free(psNew);
@@ -143,10 +154,8 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
   oNNode, i.e., deletes this node and all its descendents. Returns the
   number of nodes deleted.
 */
-size_t File_free(File_T oNNode)
+int File_free(File_T oNNode)
 {
-   size_t ulIndex;
-   size_t ulCount = 0;
 
    assert(oNNode != NULL);
 
@@ -154,27 +163,20 @@ size_t File_free(File_T oNNode)
    if (oNNode->oNParent != NULL)
    {
       if (DynArray_bsearch(
-              oNNode->oNParent->oDChildren,
+              oNNode->oNParent->files,
               oNNode, &ulIndex,
-              (int (*)(const void *, const void *))Node_compare))
-         (void)DynArray_removeAt(oNNode->oNParent->oDChildren,
+              (int (*)(const void *, const void *))File_compare))
+         (void)DynArray_removeAt(oNNode->oNParent->files,
                                  ulIndex);
    }
 
-   /* recursively remove children */
-   while (DynArray_getLength(oNNode->oDChildren) != 0)
-   {
-      ulCount += Node_free(DynArray_removeAt(oNNode->oDChildren, 0));
-   }
-   DynArray_free(oNNode->oDChildren);
-
+   
    /* remove path */
    Path_free(oNNode->oPPath);
 
    /* finally, free the struct node */
    free(oNNode);
-   ulCount++;
-   return ulCount;
+   return SUCCESS;
 }
 
 /* Returns the path object representing oNNode's absolute path. */

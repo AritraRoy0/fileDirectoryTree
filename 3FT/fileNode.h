@@ -33,14 +33,14 @@ typedef struct fileNode *File_T;
                  or oNParent is NULL but oPPath is not of depth 1
   * ALREADY_IN_TREE if oNParent already has a child with this path
 */
-int File_new(Path_T oPPath, File_T oNParent, File_T *poNResult);
+int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult);
 
 /*
   Destroys and frees all memory allocated for the subtree rooted at
   oNNode, i.e., deletes this node and all its descendents. Returns the
   number of nodes deleted.
 */
-size_t File_free(File_T oNNode);
+int File_free(File_T oNNode);
 
 /* Returns the path object representing oNNode's absolute path. */
 Path_T File_getPath(File_T oNNode);
