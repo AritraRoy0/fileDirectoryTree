@@ -57,8 +57,9 @@ Path_T File_getPath(File_T oNNode);
 Dir_Tree File_getParent(File_T oNNode);
 
 
-
-/*        Implement Together                        */
+/* sets the contents of a file according to void * contents and its
+length size_t length. Finally returns SUCCESS or FAILURE */
+int File_setContents(File_T oFile, void *contents, size_t length);
 
 /* Returns a pointer to the contents of a file */
 void *File_getContents(File_T oFile);

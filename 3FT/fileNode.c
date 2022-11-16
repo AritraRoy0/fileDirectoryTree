@@ -205,3 +205,41 @@ Dir_Tree File_getParent(File_T oNNode)
    assert(oNNode != NULL);
    return oNNode->parentDir;
 }
+
+
+/* sets the contents of a file according to void * contents and its
+length size_t length. Finally returns SUCCESS or FAILURE */
+int File_setContents(File_T oFile, void *contents, size_t length) {
+
+   assert(oFile != NULL);
+
+   oFile->contents = calloc(length, sizeof(Byte));
+   if (oFile->contents == NULL) {
+      return MEMORY_ERROR;
+   }
+   *(oFile->contents) = *contents;
+   oFile->conLen = length;
+   return SUCCESS;
+
+}
+
+/* Returns a pointer to the contents of a file */
+void *File_getContents(File_T oFile) {
+   assert(oFile != NULL);
+
+   return oFile->contents;
+}
+
+/* Replaces contents of a file with new content and 
+Returns a pointer to the new contents of a file */
+void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
+   assert(oFile != NULL);
+
+   oFile->contents = calloc(newLength, sizeof(Byte));
+   if (oFile->contents == NULL) {
+      return MEMORY_ERROR;
+   }
+   *(oFile->contents) = *newContents;
+   oFile->conLen = newLength;
+   return SUCCESS;
+}
