@@ -323,17 +323,35 @@ assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
    return SUCCESS;
 }
 
-/*
-  Returns a string representation of the
-  data structure, or NULL if the structure is
-  not initialized or there is an allocation error.
+boolean FT_containsDir(const char *pcPath){
+  int iStatus;
+   Node_T oNFound = NULL;
 
-  The representation is depth-first with files
-  before directories at any given level, and nodes
-  of the same type ordered lexicographically.
+   assert(pcPath != NULL);
 
-  Allocates memory for the returned string,
-  which is then owned by client!
-*/
+   iStatus = DT_findNode(pcPath, &oNFound);
+   return (boolean) (iStatus == SUCCESS);
+}
+
+int FT_rmDir(const char *pcPath){
+  int iStatus;
+   Node_T oNFound = NULL;
+
+   assert(pcPath != NULL);
+   assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
+
+   iStatus = DT_findNode(pcPath, &oNFound);
+
+   if(iStatus != SUCCESS)
+       return iStatus;
+
+   ulCount -= Node_free(oNFound);
+   if(ulCount == 0)
+      oNRoot = NULL;
+
+   assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
+   return SUCCESS;
+}
+
 
 
