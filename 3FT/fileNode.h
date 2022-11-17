@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include "a4def.h"
 #include "path.h"
-#include <dirNode.h>
+#include "dirNode.h"
 
 
 /* A Dir_T is a directory node in a Directory Tree */
