@@ -114,12 +114,12 @@ Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
             return NO_SUCH_PATH;
         }
     }
-    psNew->oNParent = oNParent;
+    psNew->parentDir = oNParent;
 
     /* initialize the new node */
     psNew->subDirs = DynArray_new(0);
     psNew->files = DynArray_new(0);
-    if (psNew->oDChildren == NULL)
+    if (psNew->subDirs == NULL || psNew->files = NULL)
     {
         Path_free(psNew->path);
         free(psNew);
@@ -164,13 +164,13 @@ size_t Dir_free(Dir_T oNNode)
     assert(oNNode != NULL);
 
     /* remove from parent's list */
-    if (oNNode->oNParent != NULL)
+    if (oNNode->parentDir != NULL)
     {
         if (DynArray_bsearch(
-                oNNode->oNParent->subDirs,
+                oNNode->parentDir->subDirs,
                 oNNode, &ulIndex,
                 (int (*)(const void *, const void *))Dir_compare))
-            (void)DynArray_removeAt(oNNode->oNParent->subDirs,
+            (void)DynArray_removeAt(oNNode->parentDir->subDirs,
                                     ulIndex);
     }
     /* remove all files */
@@ -259,7 +259,7 @@ int Dir_getFile(Dir_T oNParent, size_t ulChildID,
     assert(poNResult != NULL);
 
     /* ulChildID is the index into oNParent->oDChildren */
-    if (ulChildID >= Node_getNumFiles(oNParent))
+    if (ulChildID >= Dir_getNumFiles(oNParent))
     {
         *poNResult = NULL;
         return NO_SUCH_PATH;
@@ -283,7 +283,7 @@ static int Dir_compareString(const Dir_T oNFirst,
   ulIndex. Returns SUCCESS if the new sub dir child was added successfully,
   or  MEMORY_ERROR if allocation fails adding oNChild to the array.
 */
-/*
+
 static int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
 {
     assert(oNParent != NULL);
@@ -294,7 +294,7 @@ static int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
     else
         return MEMORY_ERROR;
 }
-
+/*
 static int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
 {
     assert(oNParent != NULL);
@@ -310,11 +310,13 @@ static int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
 */
 boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
 {
+    
+
+    boolean ret1, ret2;
+
     assert(oNParent != NULL);
     assert(oPPath != NULL);
     assert(pulChildID != NULL);
-
-    boolean ret1, ret2;
 
     /* *pulChildID is the index into oNParent->oDChildren */
     ret1 = DynArray_bsearch(oNParent->subDirs,
