@@ -25,17 +25,16 @@ struct fileNode
    size_t conLen;
 };
 
-
-
-
-int File_compare(File_T oNFirst, File_T oNSecond) {
+int File_compare(File_T oNFirst, File_T oNSecond)
+{
    assert(oNFirst != NULL);
    assert(oNSecond != NULL);
 
    return Path_comparePath(oNFirst->path, oNSecond->path);
 }
 
-int File_compareString(const File_T oNFirst, const char *pcSecond){
+int File_compareString(const File_T oNFirst, const char *pcSecond)
+{
    assert(oNFirst != NULL);
    assert(pcSecond != NULL);
    return Path_compareString(oNFirst->path, pcSecond);
@@ -110,13 +109,13 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
          return NO_SUCH_PATH;
       }
       /* parent must not already have child with this path */
-        if (Dir_hasChild(oNParent, oPPath, &ulIndex))
-        {
-            Path_free(psNew->path);
-            free(psNew);
-            *poNResult = NULL;
-            return ALREADY_IN_TREE;
-        }
+      if (Dir_hasChild(oNParent, oPPath, &ulIndex))
+      {
+         Path_free(psNew->path);
+         free(psNew);
+         *poNResult = NULL;
+         return ALREADY_IN_TREE;
+      }
    }
    else
    {
@@ -131,8 +130,6 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
       }
    }
    psNew->parentDir = oNParent;
-
-
 
    /* Link into parent's children list */
    if (oNParent != NULL)
@@ -149,7 +146,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
 
    *poNResult = psNew;
 
-      return SUCCESS;
+   return SUCCESS;
 }
 
 /*
@@ -173,7 +170,6 @@ int File_free(File_T oNNode)
                                  ulIndex);
    }
 
-   
    /* remove path */
    Path_free(oNNode->path);
 
@@ -198,37 +194,40 @@ Dir_T File_getParent(File_T oNNode)
    return oNNode->parentDir;
 }
 
-
 /* sets the contents of a file according to void * contents and its
 length size_t length. Finally returns SUCCESS or FAILURE */
-int File_setContents(File_T oFile, void *contents, size_t length) {
+int File_setContents(File_T oFile, void *contents, size_t length)
+{
 
    assert(oFile != NULL);
 
    oFile->contents = calloc(length, sizeof(char));
-   if (oFile->contents == NULL) {
+   if (oFile->contents == NULL)
+   {
       return MEMORY_ERROR;
    }
-   *(oFile->contents) =  *((char * )contents);
+   *(oFile->contents) = *((char *)contents);
    oFile->conLen = length;
    return SUCCESS;
-
 }
 
 /* Returns a pointer to the contents of a file */
-void *File_getContents(File_T oFile) {
+void *File_getContents(File_T oFile)
+{
    assert(oFile != NULL);
 
-   return oFile->contents;
+   return (void *)oFile->contents;
 }
 
-/* Replaces contents of a file with new content and 
+/* Replaces contents of a file with new content and
 Returns a pointer to the new contents of a file */
-void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
+void *File_replaceContents(File_T oFile, void *newContents, size_t newLength)
+{
    assert(oFile != NULL);
 
    oFile->contents = calloc(newLength, sizeof(char));
-   if (oFile->contents == NULL) {
+   if (oFile->contents == NULL)
+   {
       return NULL;
    }
    oFile->contents = newContents;
@@ -236,8 +235,9 @@ void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
    return SUCCESS;
 }
 
-size_t File_getLength(File_T oFile){
-  assert(oFile != NULL);
+size_t File_getLength(File_T oFile)
+{
+   assert(oFile != NULL);
 
-  return oFile->conLen;
+   return oFile->conLen;
 }
