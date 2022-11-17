@@ -320,12 +320,16 @@ int FT_insertDir(const char *pcPath)
   if (iStatus != SUCCESS)
     return iStatus;
 
-  if (FT_containsDir(Path_getPathname(oPPath)) || FT_containsFile(Path_getPathname(oPPath)))
+  if (FT_containsDir(Path_getPathname(oPPath)))
+  {
     Path_free(oPPath);
     return ALREADY_IN_TREE;
   }
-
-  
+  if (FT_containsFile(Path_getPathname(oPPath)))
+  {
+    Path_free(oPPath);
+    return ALREADY_IN_TREE;
+  }
 
   /* find the closest ancestor of oPPath already in the tree */
   iStatus = FT_traversePath(oPPath, &oNCurr);
