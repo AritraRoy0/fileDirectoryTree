@@ -4,8 +4,8 @@
 /*--------------------------------------------------------------------*/
 
 
-#ifndef NODE_INCLUDED
-#define NODE_INCLUDED
+#ifndef FILENODE_INCLUDED
+#define FILENODE_INCLUDED
 
 #include <stddef.h>
 #include "a4def.h"
