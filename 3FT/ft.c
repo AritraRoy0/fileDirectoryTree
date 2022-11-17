@@ -8,12 +8,12 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "ft.h"
 #include "dynarray.h"
 #include "path.h"
 #include "fileNode.h"
 #include "dirNode.h"
-#include "ft.h"
+
 
 /*
   A File Tree is a representation of a hierarchy of directories and files,
@@ -578,4 +578,9 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   File_new(oPPath, oNFoundParentDir, &oFile);
   File_setContents(oFile, pvContents, ulLength);
   return SUCCESS;
+}
+
+
+char *FT_toString(void) {
+  return "";
 }
