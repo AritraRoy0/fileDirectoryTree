@@ -518,45 +518,52 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
   return iStatus;
 }
 
-int FT_insertFile(const char *pcPath, void *pvContents,
-                  size_t ulLength)
+int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 {
   int iStatus;
   size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
-  File_T psNew;
-  Path_T parentDirPath, grandparentDirPath;
+  Path_T parentDirPath, oPPath;
+  File_T oFile;
   assert(pcPath != NULL);
+
+  /* validate pcPath and generate a Path_T for it */
+  if (!bIsInitialized)
+    return INITIALIZATION_ERROR;
 
   Path_prefix(pcPath, Path_getDepth(pcPath) - 1, &parentDirPath);
 
-  iStatus = FT_findDir(parentDirPath, &oNFoundParentDir);
-
-  // no valid parent directory found
+  iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
+    return iStatus;
+
+  iStatus = Ft_findDir(parentDirPath, &oNFoundParentDir);
+
+  /* appropiate parent directory found */
+  if (iStatus == SUCCESS)
   {
-    // check if same name file directory exists
-    Path_prefix(pcPath, Path_getDepth(pcPath) - 2, &grandparentDirPath);
-
-    iStatus = FT_findDir(parentDirPath, &oNFoundParentDir);
-    if (iStatus != SUCCESS)
-      return iStatus;
-
-    if (Dir_hasChild(oNFoundParentDir, parentDirPath, ulIndex))
-
-      return NOT_A_DIRECTORY;
-
-    else
-      return iStatus;
+    if (FT_containsFile(pcPath) {
+      return ALREADY_IN_TREE;
+    } else {
+      File_new(oPPath, oNFoundParentDir, oFile);
+      File_setContents(oFile, pvContents, ulLength);
+      return SUCCESS;
+    }
   }
 
-  istatus = File_new(pcPath, oNFoundParentDir, &psNew);
+  istatus = FT_insertDir(parentDirPath);
   if (iStatus != SUCCESS)
+  {
     return iStatus;
-  istatus = File_setContents(psNew, pvContents, ulLength);
+  }
+  istatus = FT_findDir(parentDirPath, oNFoundParentDir);
   if (iStatus != SUCCESS)
+  {
     return iStatus;
+  }
+  File_new(oPPath, oNFoundParentDir, oFile);
+  File_setContents(oFile, pvContents, ulLength);
   return SUCCESS;
 }
-/* this shit needs to be fixed after all other files exist /*
+
 
