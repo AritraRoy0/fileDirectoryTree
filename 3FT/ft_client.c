@@ -61,6 +61,7 @@ int main(void)
    assert(FT_insertDir("/1root/2child") == BAD_PATH);
    assert(FT_insertDir("1root/2child/") == BAD_PATH);
    assert(FT_insertDir("1root//2child") == BAD_PATH);
+      printf("Checkpoint 0.1");
    assert(FT_insertFile("", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
