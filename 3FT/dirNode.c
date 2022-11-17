@@ -49,7 +49,7 @@ int Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
     assert(oNParent == NULL);
 
     /* allocate space for a new node */
-    psNew = (struct dirNode *)calloc(sizeof(struct dirNode));
+    psNew = (struct dirNode *)calloc(1, sizeof(struct dirNode));
     if (psNew == NULL)
     {
         *poNResult = NULL;
