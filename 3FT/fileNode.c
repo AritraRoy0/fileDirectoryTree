@@ -31,13 +31,13 @@ int File_compare(File_T oNFirst, File_T oNSecond) {
    assert(oNFirst != NULL);
    assert(oNSecond != NULL);
 
-   return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
+   return Path_comparePath(oNFirst->path, oNSecond->path);
 }
 
 int File_compareString(const File_T oNFirst, const char *pcSecond){
    assert(oNFirst != NULL);
    assert(pcSecond != NULL);
-   return Path_compareString(oNFirst->oPPath, pcSecond);
+   return Path_compareString(oNFirst->path, pcSecond);
 }
 
 /*
@@ -80,30 +80,30 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
       *poNResult = NULL;
       return iStatus;
    }
-   psNew->oPPath = oPNewPath;
+   psNew->path = oPNewPath;
 
    /* validate and set the new node's parent */
    if (oNParent != NULL)
    {
       size_t ulSharedDepth;
 
-      oPParentPath = oNParent->oPPath;
+      oPParentPath = oNParent->path;
       ulParentDepth = Path_getDepth(oPParentPath);
-      ulSharedDepth = Path_getSharedPrefixDepth(psNew->oPPath,
+      ulSharedDepth = Path_getSharedPrefixDepth(psNew->path,
                                                 oPParentPath);
       /* parent must be an ancestor of child */
       if (ulSharedDepth < ulParentDepth)
       {
-         Path_free(psNew->oPPath);
+         Path_free(psNew->path);
          free(psNew);
          *poNResult = NULL;
          return CONFLICTING_PATH;
       }
 
       /* parent must be exactly one level up from child */
-      if (Path_getDepth(psNew->oPPath) != ulParentDepth + 1)
+      if (Path_getDepth(psNew->path) != ulParentDepth + 1)
       {
-         Path_free(psNew->oPPath);
+         Path_free(psNew->path);
          free(psNew);
          *poNResult = NULL;
          return NO_SUCH_PATH;
@@ -111,7 +111,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
       /* parent must not already have child with this path */
         if (Dir_hasChild(oNParent, oPPath, &ulIndex))
         {
-            Path_free(psNew->oPPath);
+            Path_free(psNew->path);
             free(psNew);
             *poNResult = NULL;
             return ALREADY_IN_TREE;
@@ -121,21 +121,21 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    {
       /* new node must be root */
       /* can only create one "level" at a time */
-      if (Path_getDepth(psNew->oPPath) != 1)
+      if (Path_getDepth(psNew->path) != 1)
       {
-         Path_free(psNew->oPPath);
+         Path_free(psNew->path);
          free(psNew);
          *poNResult = NULL;
          return NO_SUCH_PATH;
       }
    }
-   psNew->oNParent = oNParent;
+   psNew->parentDir = oNParent;
 
    /* initialize the new node */
    psNew->files = DynArray_new(0);
    if (psNew->files == NULL)
    {
-      Path_free(psNew->oPPath);
+      Path_free(psNew->path);
       free(psNew);
       *poNResult = NULL;
       return MEMORY_ERROR;
@@ -147,7 +147,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
       iStatus = Dir_addFile(oNParent, psNew, ulIndex);
       if (iStatus != SUCCESS)
       {
-         Path_free(psNew->oPPath);
+         Path_free(psNew->path);
          free(psNew);
          *poNResult = NULL;
          return iStatus;
@@ -166,14 +166,14 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
 */
 int File_free(File_T oNNode)
 {
-
+   size_t ulIndex;
    assert(oNNode != NULL);
 
    /* remove from parent's list */
-   if (oNNode->oNParent != NULL)
+   if (oNNode->parentDir != NULL)
    {
       if (DynArray_bsearch(
-              oNNode->oNParent->files,
+              oNNode->parentDir->files,
               oNNode, &ulIndex,
               (int (*)(const void *, const void *))File_compare))
          (void)DynArray_removeAt(oNNode->oNParent->files,
@@ -182,7 +182,7 @@ int File_free(File_T oNNode)
 
    
    /* remove path */
-   Path_free(oNNode->oPPath);
+   Path_free(oNNode->path);
 
    /* finally, free the struct node */
    free(oNNode);
@@ -212,11 +212,11 @@ int File_setContents(File_T oFile, void *contents, size_t length) {
 
    assert(oFile != NULL);
 
-   oFile->contents = calloc(length, sizeof(Byte));
+   oFile->contents = calloc(length, sizeof(char));
    if (oFile->contents == NULL) {
-      return MEMORY_ERROR;
+      return FAILURE;
    }
-   *(oFile->contents) = *contents;
+   oFile->contents = contents;
    oFile->conLen = length;
    return SUCCESS;
 
@@ -234,7 +234,7 @@ Returns a pointer to the new contents of a file */
 void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
    assert(oFile != NULL);
 
-   oFile->contents = calloc(newLength, sizeof(byte));
+   oFile->contents = calloc(newLength, sizeof(char));
    if (oFile->contents == NULL) {
       return NULL;
    }
