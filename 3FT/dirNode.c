@@ -340,7 +340,7 @@ boolean Dir_hasSubDir(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
     /* *pulChildID is the index into oNParent->oDChildren */
     if (DynArray_bsearch(oNParent->subDirs,
                          (char *)Path_getPathname(oPPath), pulChildID,
-                         (int (*)(const void *, const void *))Dir_compareString))
+                         (int (*)(const void *, const void *))Dir_compareString) == 1)
     {
         return TRUE;
     }
