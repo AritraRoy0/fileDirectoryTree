@@ -560,12 +560,12 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     }
   }
 
-  iStatus = FT_insertDir(Path_getPathName(parentDirPath));
+  iStatus = FT_insertDir(Path_getPathname(parentDirPath));
   if (iStatus != SUCCESS)
   {
     return iStatus;
   }
-  istatus = FT_findDir(Path_getPathName(parentDirPath), &oNFoundParentDir);
+  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
   if (iStatus != SUCCESS)
   {
     return iStatus;
