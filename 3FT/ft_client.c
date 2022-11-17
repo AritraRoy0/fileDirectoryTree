@@ -24,7 +24,7 @@ int main(void)
    size_t l;
    char arr[ARRLEN];
    arr[0] = '\0';
-
+   printf("checkpoint 0");
    /* Before the data structure is initialized:
     * insert*, rm*, and destroy should all return INITIALIZATION_ERROR
     * contains* should return FALSE
@@ -52,7 +52,7 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
-printf("checkpoint 0");
+   printf("checkpoint 0");
    /* A valid path must not:
     * be the empty string
     * start with a '/'
