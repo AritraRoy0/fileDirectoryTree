@@ -14,7 +14,7 @@ clobber: clean
 	rm -f ft_client.o *~
 
 ft: ft.o ft_client.o dynarray.o path.o dirNode.o fileNode.o
-	$(CC) ft.o ft_client.o -o ft
+	$(CC) ft.o ft_client.o dynarray.o path.o dirNode.o fileNode.o -o ft
 
 ft_client.o: ft_client.c ft.h a4def.h
 	$(CC) -c ft_client.c
