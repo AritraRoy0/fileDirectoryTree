@@ -278,7 +278,7 @@ int FT_rmDir(const char *pcPath)
 
   assert(pcPath != NULL);
 
-  iStatus = Ft_findDir(pcPath, &oNFound);
+  iStatus = FT_findDir(pcPath, &oNFound);
 
   if (iStatus != SUCCESS)
     return iStatus;
