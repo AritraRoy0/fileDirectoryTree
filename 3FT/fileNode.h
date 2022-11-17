@@ -25,7 +25,7 @@ typedef struct fileNode *File_T;
 int File_compare(File_T oNFirst, File_T oNSecond);
 int File_compareString(const File_T oNFirst, const char *pcSecond);
 Path_T File_getPath(File_T oNNode);
-Dir_Tree File_getParent(File_T oNNode);
+Dir_T File_getParent(File_T oNNode);
 /*
   Creates a new node in the Directory Tree, with path oPPath and
   parent oNParent. Returns an int SUCCESS status and sets *poNResult
@@ -54,7 +54,7 @@ Path_T File_getPath(File_T oNNode);
   Returns a the parent node of oNNode.
   Returns NULL if oNNode is the root and thus has no parent.
 */
-Dir_Tree File_getParent(File_T oNNode);
+Dir_T File_getParent(File_T oNNode);
 
 
 /* sets the contents of a file according to void * contents and its
