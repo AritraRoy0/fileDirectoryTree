@@ -70,7 +70,7 @@ int Dir_getFile(Dir_T oNParent, size_t ulChildID,
 Dir_T Dir_getParent(Dir_T oNNode);
 
 /* Returns the number of children that oNParent has. */
-size_t Dir_addSubDir(Dir_T oNParent);
+size_t Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex;
 
 /*
   Returns an int SUCCESS status and sets *poNResult to be the child

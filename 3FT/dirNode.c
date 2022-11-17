@@ -119,7 +119,7 @@ Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
     /* initialize the new node */
     psNew->subDirs = DynArray_new(0);
     psNew->files = DynArray_new(0);
-    if (psNew->subDirs == NULL || psNew->files = NULL)
+    if (psNew->subDirs == NULL || psNew->files == NULL)
     {
         Path_free(psNew->path);
         free(psNew);
