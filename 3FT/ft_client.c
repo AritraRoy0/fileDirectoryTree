@@ -93,13 +93,14 @@ int main(void)
 
 
 
-
+   fprintf(stderr, "Checkpoint 1:");
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
+      fprintf(stderr, "Checkpoint 2:");
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==
           ALREADY_IN_TREE);
           
-   fprintf(stderr, "Checkpoint 1:");
-   
+   fprintf(stderr, "Checkpoint 3:");
+
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
    assert(FT_insertDir("1otherroot/2d") == CONFLICTING_PATH);
    assert(FT_insertFile("1otherroot/2f", NULL, 0) == CONFLICTING_PATH);
