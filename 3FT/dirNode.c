@@ -320,7 +320,7 @@ boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
     ret2 = DynArray_bsearch(oNParent->files,
                             (char *)Path_getPathname(oPPath), pulChildID,
                             (int (*)(const void *, const void *))File_compareString);
-    return (boolean) (ret1 || ret2);
+    return (boolean)(ret1 || ret2);
 }
 
 DynArray_T Dir_getFiles(Dir_T oNParent)
@@ -338,7 +338,12 @@ boolean Dir_hasSubDir(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
     assert(pulChildID != NULL);
 
     /* *pulChildID is the index into oNParent->oDChildren */
-    return (boolean) DynArray_bsearch(oNParent->subDirs,
-                            (char *)Path_getPathname(oPPath), pulChildID,
-                            (int (*)(const void *, const void *))Dir_compareString);
+    if (DynArray_bsearch(oNParent->subDirs,
+                         (char *)Path_getPathname(oPPath), pulChildID,
+                         (int (*)(const void *, const void *))Dir_compareString))
+    {
+        return TRUE;
+    }
+    else
+        return FALSE;
 }
