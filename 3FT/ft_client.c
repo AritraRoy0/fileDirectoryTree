@@ -61,7 +61,6 @@ int main(void)
    assert(FT_insertDir("/1root/2child") == BAD_PATH);
    assert(FT_insertDir("1root/2child/") == BAD_PATH);
    assert(FT_insertDir("1root//2child") == BAD_PATH);
-      printf("Checkpoint 0.1");
    assert(FT_insertFile("", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
@@ -69,7 +68,6 @@ int main(void)
 
    /* putting a file at the root is illegal */
    assert(FT_insertFile("A", NULL, 0) == CONFLICTING_PATH);
-   printf("Checkpoint 0.1");
    /* After insertion, the data structure should contain every prefix
       of the inserted path, toString should return a string with these
       prefixes, trying to insert it again should return
@@ -88,7 +86,6 @@ int main(void)
    assert(FT_containsFile("1root/2second") == FALSE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
-   printf("Checkpoint 0.2");
 
    assert(FT_getFileContents("1root/2second/3gfile") == NULL);
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);

@@ -143,7 +143,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
          return iStatus;
       }
    }
-
+   psNew->contents = NULL;
    *poNResult = psNew;
 
    return SUCCESS;
@@ -200,14 +200,14 @@ int File_setContents(File_T oFile, void *contents, size_t length)
 {
 
    assert(oFile != NULL);
-
+/*
    oFile->contents = calloc(length, sizeof(char));
    if (oFile->contents == NULL)
    {
       return MEMORY_ERROR;
    }
    *(oFile->contents) = *((char *)contents);
-   oFile->conLen = length;
+   oFile->conLen = length; */
    return SUCCESS;
 }
 
@@ -216,7 +216,7 @@ void *File_getContents(File_T oFile)
 {
    assert(oFile != NULL);
 
-   return (void *)oFile->contents;
+   return oFile->contents;
 }
 
 /* Replaces contents of a file with new content and
@@ -225,14 +225,14 @@ void *File_replaceContents(File_T oFile, void *newContents, size_t newLength)
 {
    assert(oFile != NULL);
 
-   oFile->contents = calloc(newLength, sizeof(char));
+  /*  oFile->contents = calloc(newLength, sizeof(char));
    if (oFile->contents == NULL)
    {
       return NULL;
    }
    oFile->contents = newContents;
-   oFile->conLen = newLength;
-   return SUCCESS;
+   oFile->conLen = newLength; */
+   return oFile->contents;
 } /* this is buggy */
 
 size_t File_getLength(File_T oFile)
