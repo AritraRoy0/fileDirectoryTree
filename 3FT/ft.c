@@ -310,14 +310,14 @@ int FT_insertDir(const char *pcPath)
   size_t ulNewNodes = 0;
 
   assert(pcPath != NULL);
-  iStatus = Path_new(pcPath, &oPPath);
-  fprintf(stderr, "Checkpoint 0: %d, %s", iStatus, pcPath);
+
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
   {
     return INITIALIZATION_ERROR;
   }
-
+  iStatus = Path_new(pcPath, &oPPath);
+  fprintf(stderr, "Checkpoint 0: %d, %s", iStatus, pcPath);
   if (FT_containsDir(Path_getPathname(oPPath)))
   {
     Path_free(oPPath);
