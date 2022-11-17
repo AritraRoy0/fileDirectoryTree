@@ -337,13 +337,12 @@ int FT_insertDir(const char *pcPath)
     return iStatus;
 
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-  istatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
+  iStatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
   if (iStatus == SUCCESS)
     return NOT_A_DIRECTORY;
 
-
   /* find the closest ancestor of oPPath already in the tree */
-  
+
   iStatus = FT_traversePath(oPPath, &oNCurr);
   if (iStatus != SUCCESS)
   {
@@ -577,7 +576,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     return CONFLICTING_PATH;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
-  istatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
+  iStatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
   if (iStatus == SUCCESS)
     return NOT_A_DIRECTORY;
 
