@@ -94,7 +94,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
     if (Dir_hasSubDir(oNCurr, oPPrefix, &ulChildID) == TRUE)
     {
       /* go to that child and continue with next prefix */
-      f/* printf(stderr, "Has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix)); */
+      /* fprintf(stderr, "Has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix)); */
       Path_free(oPPrefix);
       oPPrefix = NULL;
       iStatus = Dir_getSubDir(oNCurr, ulChildID, &oNChild);
