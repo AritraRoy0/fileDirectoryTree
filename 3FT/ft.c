@@ -80,6 +80,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
   oPPrefix = NULL;
 
   oNCurr = oNRoot;
+  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPpath));
   ulDepth = Path_getDepth(oPPath);
   for (i = 2; i <= ulDepth; i++)
   {
@@ -93,7 +94,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
     if (Dir_hasSubDir(oNCurr, oPPrefix, &ulChildID) == TRUE)
     {
       /* go to that child and continue with next prefix */
-      fprintf(stderr, "has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix));
+      fprintf(stderr, "Has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix));
       Path_free(oPPrefix);
       oPPrefix = NULL;
       iStatus = Dir_getSubDir(oNCurr, ulChildID, &oNChild);
@@ -159,7 +160,6 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
 
   if (oNFound == NULL)
   {
-    fprintf(stderr, "oNFound null\n");
     Path_free(oPPath);
     *poNResult = NULL;
     return NO_SUCH_PATH;
@@ -167,7 +167,6 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
 
   if (Path_comparePath(Dir_getPath(oNFound), oPPath) != 0)
   {
-    fprintf(stderr, "oNFound path not exact\n%s\n", Path_getPathname(Dir_getPath(oNFound)));
     Path_free(oPPath);
     *poNResult = NULL;
     return NO_SUCH_PATH;
