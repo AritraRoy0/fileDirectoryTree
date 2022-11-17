@@ -201,13 +201,13 @@ int FT_rmFile(const char *pcPath)
     return iStatus;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
-  iStatus = Ft_findDir(parentDirPath, &oNFoundParentDir);
+  iStatus = FT_findDir(parentDirPath, &oNFoundParentDir);
 
   if (iStatus != SUCCESS)
     return iStatus;
 
-  oFile = DynArray_removeAt(oNFoundParentDir->files,
-                            DynArray_bsearch(oNFoundParentDir->files, (char *)Path_getPathname(oPPath), pulChildID,
+  oFile = DynArray_removeAt((*oNFoundParentDir)->files,
+                            DynArray_bsearch((*oNFoundParentDir)->files, (char *)Path_getPathname(oPPath), &ulIndex,
                                              (int (*)(const void *, const void *))File_compareString
 
                                              ));
@@ -522,7 +522,7 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
   if (FT_findFile(pcPath, &foundFile) == SUCCESS)
   {
     *pbIsFile = TRUE;
-    *pulSize = foundFile->conLen;
+    *pulSize = (*foundFile)->conLen;
     return SUCCESS;
   }
   return iStatus;
