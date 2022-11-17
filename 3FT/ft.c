@@ -587,6 +587,6 @@ char *FT_toString(void)
   char *ret = calloc(10, sizeof(char));
   if (!bIsInitialized)
     return NULL;
-  ret = "";
+  *ret = (char)"";
   return ret;
 }
