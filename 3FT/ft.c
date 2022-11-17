@@ -192,7 +192,8 @@ int FT_rmFile(const char *pcPath)
   int iStatus;
   size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath, oPPath;
+  Path_T parentDirPath = NULL;
+  Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
   iStatus = Path_new(pcPath, &oPPath);
@@ -401,7 +402,8 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   int iStatus;
   size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath, oPPath;
+  Path_T parentDirPath = NULL;
+  Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
 
@@ -531,7 +533,8 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 {
   int iStatus;
   Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath, oPPath;
+  Path_T parentDirPath = NULL;
+  Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
 
