@@ -7,14 +7,18 @@
 #ifndef FILENODE_INCLUDED
 #define FILENODE_INCLUDED
 
+
+/* A Dir_T is a directory node in a Directory Tree */
+typedef struct fileNode *File_T;
+
+
 #include <stddef.h>
 #include "a4def.h"
 #include "path.h"
 #include "dirNode.h"
 
 
-/* A Dir_T is a directory node in a Directory Tree */
-typedef struct fileNode *File_T;
+
 
 
 int File_compare(File_T oNFirst, File_T oNSecond);

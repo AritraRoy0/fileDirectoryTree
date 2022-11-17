@@ -6,13 +6,15 @@
 #ifndef DIRNODE_INCLUDED
 #define DIRNODE_INCLUDED
 
+/* A Dir_T is a directory node in a Directory Tree */
+typedef struct dirNode *Dir_T;
+
 #include <stddef.h>
 #include "a4def.h"
 #include "path.h"
 #include "fileNode.h"
 
-/* A Dir_T is a directory node in a Directory Tree */
-typedef struct dirNode *Dir_T;
+
 
 /*
   Creates a new dir node in the Directory Tree, with path oPPath and
