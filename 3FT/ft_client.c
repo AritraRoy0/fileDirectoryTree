@@ -24,7 +24,6 @@ int main(void)
    size_t l;
    char arr[ARRLEN];
    arr[0] = '\0';
-   printf("checkpoint 0");
    /* Before the data structure is initialized:
     * insert*, rm*, and destroy should all return INITIALIZATION_ERROR
     * contains* should return FALSE
@@ -44,26 +43,27 @@ int main(void)
       contains* should still return FALSE for any non-NULL string,
       and toString should return the empty string.
    */
-   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_init() == SUCCESS);
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
-   fprintf(stderr, "Checkpoint 1:\n");
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
    
-   fprintf(stderr, "Checkpoint 1:\n");
    /* A valid path must not:
     * be the empty string
     * start with a '/'
     * end with a '/'
     * have consecutive '/' delimiters.
     */
+   
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertDir("") == BAD_PATH);
    assert(FT_insertDir("/1root/2child") == BAD_PATH);
    assert(FT_insertDir("1root/2child/") == BAD_PATH);
    assert(FT_insertDir("1root//2child") == BAD_PATH);
+   
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertFile("", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
