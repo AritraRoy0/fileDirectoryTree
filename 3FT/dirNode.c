@@ -93,7 +93,7 @@ int Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
         }
 
         /* parent must not already have child with this path */
-        if (Dir_hasChild(oNParent, oPPath, &ulIndex))
+        if (Dir_hasSubDir(oNParent, oPPath, &ulIndex))
         {
             Path_free(psNew->path);
             free(psNew);

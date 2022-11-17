@@ -80,7 +80,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
   oPPrefix = NULL;
 
   oNCurr = oNRoot;
-  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPPath));
+ /*  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPPath)); */
   ulDepth = Path_getDepth(oPPath);
   for (i = 2; i <= ulDepth; i++)
   {
@@ -90,11 +90,11 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
       *poNFurthest = NULL;
       return iStatus;
     }
-    fprintf(stderr, "Prefix at depth %ld : %s\n", i, Path_getPathname(oPPrefix));
+    /* fprintf(stderr, "Prefix at depth %ld : %s\n", i, Path_getPathname(oPPrefix)); */
     if (Dir_hasSubDir(oNCurr, oPPrefix, &ulChildID) == TRUE)
     {
       /* go to that child and continue with next prefix */
-      fprintf(stderr, "Has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix));
+      f/* printf(stderr, "Has subDir at depth %ld : %s\n", i, Path_getPathname(oPPrefix)); */
       Path_free(oPPrefix);
       oPPrefix = NULL;
       iStatus = Dir_getSubDir(oNCurr, ulChildID, &oNChild);
