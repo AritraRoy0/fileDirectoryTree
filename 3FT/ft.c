@@ -582,5 +582,5 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 
 
 char *FT_toString(void) {
-  return "";
+  return NULL;
 }

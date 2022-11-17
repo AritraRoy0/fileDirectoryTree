@@ -14,10 +14,7 @@
 
 #include <stddef.h>
 #include "a4def.h"
-#include "dynarray.h"
-#include "path.h"
-#include "fileNode.h"
-#include "dirNode.h"
+
 
 /*
    Inserts a new directory into the FT with absolute path pcPath.
