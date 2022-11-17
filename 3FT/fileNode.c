@@ -199,7 +199,7 @@ Path_T File_getPath(File_T oNNode)
   Returns a the parent node of oNNode.
   Returns NULL if oNNode is the root and thus has no parent.
 */
-Dir_Tree File_getParent(File_T oNNode)
+Dir_T File_getParent(File_T oNNode)
 {
    assert(oNNode != NULL);
    return oNNode->parentDir;
@@ -234,11 +234,11 @@ Returns a pointer to the new contents of a file */
 void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
    assert(oFile != NULL);
 
-   oFile->contents = calloc(newLength, sizeof(Byte));
+   oFile->contents = calloc(newLength, sizeof(byte));
    if (oFile->contents == NULL) {
-      return MEMORY_ERROR;
+      return NULL;
    }
-   *(oFile->contents) = *newContents;
+   oFile->contents = newContents;
    oFile->conLen = newLength;
    return SUCCESS;
 }
