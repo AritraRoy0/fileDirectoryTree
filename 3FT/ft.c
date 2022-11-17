@@ -303,7 +303,7 @@ int FT_rmDir(const char *pcPath)
 int FT_insertDir(const char *pcPath)
 {
   int iStatus;
-  Path_T oPPath = NULL;
+  Path_T oPPath;
   Dir_T oNFirstNew = NULL;
   Dir_T oNCurr = NULL;
   size_t ulDepth, ulIndex;
