@@ -165,7 +165,7 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
 
   if (Path_comparePath(Dir_getPath(oNFound), oPPath) != 0)
   {
-    fprintf(stderr, "oNFound path not exact\n");
+    fprintf(stderr, "oNFound path not exact\n%s\n", Path_getPathname(Dir_getPath(oNFound)));
     Path_free(oPPath);
     *poNResult = NULL;
     return NO_SUCH_PATH;
@@ -320,7 +320,7 @@ int FT_insertDir(const char *pcPath)
   }
 
   iStatus = FT_findDir(pcPath, &oNCurr);
-  fprintf(stderr, "Checkpoint 3: \n%d\n", iStatus);
+  fprintf(stderr, "Status Check: %d\n", iStatus);
   if (iStatus == SUCCESS)
   {
     return ALREADY_IN_TREE;
