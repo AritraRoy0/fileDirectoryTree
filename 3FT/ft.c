@@ -311,6 +311,7 @@ int FT_insertDir(const char *pcPath)
 
   assert(pcPath != NULL);
   iStatus = Path_new(pcPath, &oPPath);
+  fprintf(stderr, "Checkpoint 0: %d, %s", iStatus, pcPath);
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
   {
