@@ -310,24 +310,24 @@ int FT_insertDir(const char *pcPath)
   size_t ulNewNodes = 0;
 
   assert(pcPath != NULL);
-
+  iStatus = Path_new(pcPath, &oPPath);
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
   {
     return INITIALIZATION_ERROR;
   }
-  iStatus = Path_new(pcPath, &oPPath);
 
   if (FT_containsDir(Path_getPathname(oPPath)))
   {
-    Path_free(oPPath);
+    free(oPPath);
     return ALREADY_IN_TREE;
   }
   if (FT_containsFile(Path_getPathname(oPPath)))
   {
-    Path_free(oPPath);
+    free(oPPath);
     return ALREADY_IN_TREE;
   }
+
   if (iStatus != SUCCESS)
     return iStatus;
   /* find the closest ancestor of oPPath already in the tree */
