@@ -419,16 +419,16 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
 
   if (iStatus != SUCCESS)
     return iStatus;
+  DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
+                                        (int (*)(const void *, const void *))File_compareString)
+                                        
+  
 
-  oFile = DynArray_get(Dir_getFiles(oNFoundParentDir),
-                       DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
-                                        (int (*)(const void *, const void *))File_compareString));
-
-  if (oFile == NULL)
+  if (ulIndex >= Dir_getNumFiles(oNFoundParentDir))
   {
     return NO_SUCH_PATH;
   }
-
+  oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex); 
   *poNResult = oFile;
 
   return SUCCESS;
