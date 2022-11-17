@@ -319,12 +319,12 @@ int FT_insertDir(const char *pcPath)
 
   if (FT_containsDir(Path_getPathname(oPPath)))
   {
-    free(oPPath);
+    Path_free(oPPath);
     return ALREADY_IN_TREE;
   }
   if (FT_containsFile(Path_getPathname(oPPath)))
   {
-    free(oPPath);
+    Path_free(oPPath);
     return ALREADY_IN_TREE;
   }
 
