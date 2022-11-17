@@ -23,7 +23,7 @@
 /* 1. a flag for being in an initialized state (TRUE) or not (FALSE) */
 static boolean bIsInitialized;
 /* 2. a pointer to the root node in the hierarchy */
-static Node_T oNRoot;
+static Dir_T oNRoot;
 /* 3. a counter of the number of nodes in the hierarchy */
 static size_t ulCount;
 
@@ -504,7 +504,7 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
   File_T foundFile;
   int iStatus;
 
-  assert(pcPath != NULL;
+  assert(pcPath != NULL);
   iStatus = FT_findDir(pcPath, &foundDir);
   if (iStatus == SUCCESS) {
     *pbIsFile = FALSE;
