@@ -313,8 +313,9 @@ int FT_insertDir(const char *pcPath)
 
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
+  {
     return INITIALIZATION_ERROR;
-
+  }
   if (FT_containsDir(pcPath) || FT_containsFile(pcPath))
   {
     return ALREADY_IN_TREE;
