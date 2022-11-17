@@ -49,27 +49,24 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
-   
+
    /* A valid path must not:
     * be the empty string
     * start with a '/'
     * end with a '/'
     * have consecutive '/' delimiters.
     */
-   
-   fprintf(stderr, "Checkpoint 1:\n");
+
    assert(FT_insertDir("") == BAD_PATH);
    assert(FT_insertDir("/1root/2child") == BAD_PATH);
    assert(FT_insertDir("1root/2child/") == BAD_PATH);
    assert(FT_insertDir("1root//2child") == BAD_PATH);
-   
-   fprintf(stderr, "Checkpoint 1:\n");
+
    assert(FT_insertFile("", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root//2child", NULL, 0) == BAD_PATH);
 
-   fprintf(stderr, "Checkpoint 1:\n");
    /* putting a file at the root is illegal */
    assert(FT_insertFile("A", NULL, 0) == CONFLICTING_PATH);
    /* After insertion, the data structure should contain every prefix
@@ -83,15 +80,17 @@ int main(void)
    assert(FT_containsDir("1root") == TRUE);
    assert(FT_containsFile("1root") == FALSE);
    assert(FT_containsDir("1root/2child") == TRUE);
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_containsFile("1root/2child") == FALSE);
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_containsFile("1root/2child/3gkid") == FALSE);
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertFile("1root/2second/3gfile", NULL, 0) == SUCCESS);
    assert(FT_containsDir("1root/2second") == TRUE);
    assert(FT_containsFile("1root/2second") == FALSE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
-
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_getFileContents("1root/2second/3gfile") == NULL);
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==

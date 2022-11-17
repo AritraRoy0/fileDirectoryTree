@@ -544,10 +544,10 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
-  if(Path_getDepth(oPPath) == 1)
+  if (Path_getDepth(oPPath) == 1)
     return CONFLICTING_PATH;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-  
+
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
@@ -589,7 +589,7 @@ char *FT_toString(void)
   char *ret;
   if (!bIsInitialized)
     return NULL;
-  ret = (char *) malloc(2 * sizeof(char));
+  ret = (char *)malloc(2 * sizeof(char));
   *ret = '\0';
   return ret;
 }
