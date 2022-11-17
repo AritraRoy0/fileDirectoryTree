@@ -44,13 +44,15 @@ int main(void)
       contains* should still return FALSE for any non-NULL string,
       and toString should return the empty string.
    */
+   printf("checkpoint 0")
    assert(FT_init() == SUCCESS);
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
+   printf("checkpoint 0")
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
-
+printf("checkpoint 0")
    /* A valid path must not:
     * be the empty string
     * start with a '/'
