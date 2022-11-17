@@ -80,7 +80,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
   oPPrefix = NULL;
 
   oNCurr = oNRoot;
-  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPpath));
+  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPPath));
   ulDepth = Path_getDepth(oPPath);
   for (i = 2; i <= ulDepth; i++)
   {
