@@ -13,7 +13,7 @@
 #include "path.h"
 #include "fileNode.h"
 #include "dirNode.h"
-
+#include "a4def.h"
 /*
   A File Tree is a representation of a hierarchy of directories and files,
   represented as an AO with 3 state variables:
