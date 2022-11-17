@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include "a4def.h"
 #include "path.h"
+#include "fileNode.h"
 
 /* A Dir_T is a directory node in a Directory Tree */
 typedef struct dirNode *Dir_T;
