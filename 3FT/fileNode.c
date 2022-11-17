@@ -233,7 +233,7 @@ void *File_replaceContents(File_T oFile, void *newContents, size_t newLength)
    oFile->contents = newContents;
    oFile->conLen = newLength;
    return SUCCESS;
-}
+} /* this is buggy */
 
 size_t File_getLength(File_T oFile)
 {
