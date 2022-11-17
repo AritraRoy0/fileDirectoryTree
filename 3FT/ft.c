@@ -317,9 +317,9 @@ int FT_insertDir(const char *pcPath)
     return INITIALIZATION_ERROR;
   }
 
-  iStatus = FT_containsDir(pcPath);
+  iStatus = FT_findDir(pcPath, &oNCurr);
   fprintf(stderr, "Checkpoint 3: \n%d\n", iStatus);
-  if (iStatus)
+  if (iStatus== SUCCESS)
   {
     return ALREADY_IN_TREE;
   }
