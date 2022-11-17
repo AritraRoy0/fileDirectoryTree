@@ -20,7 +20,7 @@ struct fileNode
    /* this node's parent */
    Dir_T parentDir;
    /* the pointer to the begining of the contents of the file */
-   void *contents;
+   char *contents;
    /* the lenght of the contents */
    size_t conLen;
 };
@@ -209,7 +209,7 @@ int File_setContents(File_T oFile, void *contents, size_t length) {
    if (oFile->contents == NULL) {
       return MEMORY_ERROR;
    }
-   *(oFile->contents) = *contents;
+   *(oFile->contents) = (char) *contents;
    oFile->conLen = length;
    return SUCCESS;
 
