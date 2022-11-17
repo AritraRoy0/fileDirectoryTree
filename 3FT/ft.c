@@ -545,7 +545,8 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   if (iStatus != SUCCESS)
     return iStatus;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-
+  if (iStatus != SUCCESS)
+    return iStatus;
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
