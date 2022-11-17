@@ -315,8 +315,8 @@ int FT_insertDir(const char *pcPath)
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
   
-  if (FT_containsDir(pcPath)){
-    return CONFLICTING_PATH;
+  if (FT_containsDir(pcPath) || FT_containsFile(pcPath)){
+    return ALREADY_IN_TREE;
   }
 
   iStatus = Path_new(pcPath, &oPPath);
