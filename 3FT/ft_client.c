@@ -92,9 +92,9 @@ int main(void)
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_getFileContents("1root/2second/3gfile") == NULL);
 
-   fprintf(stderr, "Checkpoint 1:\n");
+   fprintf(stderr, "Checkpoint 1:--------------------------------\n");
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
-   fprintf(stderr, "Checkpoint 2: \n");
+   fprintf(stderr, "Checkpoint 2: -------------------------------\n");
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==
           ALREADY_IN_TREE);
 
