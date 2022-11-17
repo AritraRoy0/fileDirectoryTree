@@ -317,11 +317,11 @@ int FT_insertDir(const char *pcPath)
     return INITIALIZATION_ERROR;
   }
   fprintf(stderr, "Checkpoint 3: \n%s\n", pcPath);
-  if (!FT_containsDir(pcPath))
+  if (FT_containsDir(pcPath))
   {
     return ALREADY_IN_TREE;
   }
-  if (!FT_containsFile(pcPath))
+  if (FT_containsFile(pcPath))
   {
     return ALREADY_IN_TREE;
   }
