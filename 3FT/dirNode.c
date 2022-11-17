@@ -328,3 +328,9 @@ static int Dir_compareString(const Dir_T oNFirst,
 
     return Path_compareString(oNFirst->oPPath, pcSecond);
 }
+
+DynArray_T Dir_getFiles(Dir_T oNParent) {
+    assert(oNParent != NULL);
+
+    return oNParent->files;
+}

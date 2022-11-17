@@ -68,6 +68,6 @@ void *File_getContents(File_T oFile);
 Returns a pointer to the new contents of a file */
 void *File_replaceContents(File_T oFile, void *newContents, size_t newLength);
 
-
+size_t File_getLength(File_T oFile);
 
 #endif

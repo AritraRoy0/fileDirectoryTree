@@ -243,3 +243,9 @@ void *File_replaceContents(File_T oFile, void *newContents, size_t newLength) {
    oFile->conLen = newLength;
    return SUCCESS;
 }
+
+size_t File_getLength(File_T oFile){
+  assert(oFile != NULL);
+
+  return oFile->conLen;
+}

@@ -92,5 +92,8 @@ int Dir_rmFile(Dir_T oNParent, size_t ulChildID,
 
 boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
+DynArray_T Dir_getFiles(Dir_T oNParent);
+
+
 
 #endif
