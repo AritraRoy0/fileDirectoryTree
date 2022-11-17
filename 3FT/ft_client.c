@@ -69,6 +69,7 @@ int main(void)
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root//2child", NULL, 0) == BAD_PATH);
 
+   fprintf(stderr, "Checkpoint 1:\n");
    /* putting a file at the root is illegal */
    assert(FT_insertFile("A", NULL, 0) == CONFLICTING_PATH);
    /* After insertion, the data structure should contain every prefix
@@ -77,6 +78,7 @@ int main(void)
       ALREADY_IN_TREE, and trying to insert some other root should
       return CONFLICTING_PATH.
    */
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertDir("1root/2child/3gkid") == SUCCESS);
    assert(FT_containsDir("1root") == TRUE);
    assert(FT_containsFile("1root") == FALSE);
