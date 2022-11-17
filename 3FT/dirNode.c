@@ -35,8 +35,7 @@ struct dirNode
                  or oNParent is NULL but oPPath is not of depth 1
   * ALREADY_IN_TREE if oNParent already has a child with this path
 */
-int
-Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
+int Dir_new(Path_T oPPath, Dir_T oNParent, Dir_T *poNResult)
 {
     struct dirNode *psNew;
     Path_T oPParentPath = NULL;
@@ -294,8 +293,7 @@ int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
     else
         return MEMORY_ERROR;
 }
-/*
-static int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
+int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
 {
     assert(oNParent != NULL);
     assert(oNChild != NULL);
@@ -306,11 +304,8 @@ static int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
         return MEMORY_ERROR;
 }
 
-
-*/
 boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
 {
-    
 
     boolean ret1, ret2;
 
@@ -328,9 +323,8 @@ boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
     return ret1 || ret2;
 }
 
-
-
-DynArray_T Dir_getFiles(Dir_T oNParent) {
+DynArray_T Dir_getFiles(Dir_T oNParent)
+{
     assert(oNParent != NULL);
 
     return oNParent->files;
