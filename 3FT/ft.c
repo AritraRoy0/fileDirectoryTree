@@ -588,7 +588,7 @@ char *FT_toString(void)
   if (!bIsInitialized)
     return NULL;
   ret = (char *) malloc(2 * sizeof(char));
-  *ret = "";
+  *ret = '';
   *(ret + 1) = '\0';
   return ret;
 }
