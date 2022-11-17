@@ -548,7 +548,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   if (iStatus != SUCCESS)
     return iStatus;
 
-  iStatus = FT_findDir(parentDirPath, &oNFoundParentDir);
+  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
   /* appropiate parent directory found */
   if (iStatus == SUCCESS)
