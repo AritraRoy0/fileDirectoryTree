@@ -62,7 +62,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    int iStatus;
 
    assert(oPPath != NULL);
-   assert(oNParent == NULL);
+   assert(oNParent != NULL);
 
    /* allocate space for a new node */
    psNew = (struct fileNode *)calloc(1, sizeof(struct fileNode));
