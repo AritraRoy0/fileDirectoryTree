@@ -209,7 +209,7 @@ int File_setContents(File_T oFile, void *contents, size_t length) {
    if (oFile->contents == NULL) {
       return MEMORY_ERROR;
    }
-   oFile->contents = contents;
+   *(oFile->contents) = *contents;
    oFile->conLen = length;
    return SUCCESS;
 
