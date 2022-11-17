@@ -410,7 +410,9 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
-
+  if(Path_getDepth(oPPath) == 1) {
+    return CONFLICTING_PATH;
+  }
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
