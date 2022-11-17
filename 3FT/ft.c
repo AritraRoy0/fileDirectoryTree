@@ -176,6 +176,44 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   *poNResult = oNFound;
   return SUCCESS;
 }
+
+static int FT_findFile(const char *pcPath, File_T *poNResult)
+{
+
+  int iStatus;
+  size_t ulIndex;
+  Dir_T oNFoundParentDir = NULL;
+  Path_T parentDirPath = NULL;
+  Path_T oPPath = NULL;
+  File_T oFile;
+  assert(pcPath != NULL);
+
+  iStatus = Path_new(pcPath, &oPPath);
+  if (iStatus != SUCCESS)
+    return iStatus;
+  if (Path_getDepth(oPPath) == 1)
+  {
+    return CONFLICTING_PATH;
+  }
+  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
+
+  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
+
+  if (iStatus != SUCCESS)
+    return iStatus;
+  DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
+                   (int (*)(const void *, const void *))File_compareString);
+
+  if (ulIndex >= Dir_getNumFiles(oNFoundParentDir))
+  {
+    return NO_SUCH_PATH;
+  }
+  oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex);
+  *poNResult = oFile;
+
+  return SUCCESS;
+}
+
 /*--------------------------------------------------------------------*/
 
 /*
@@ -419,42 +457,6 @@ int FT_insertDir(const char *pcPath)
   return SUCCESS;
 }
 
-static int FT_findFile(const char *pcPath, File_T *poNResult)
-{
-
-  int iStatus;
-  size_t ulIndex;
-  Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath = NULL;
-  Path_T oPPath = NULL;
-  File_T oFile;
-  assert(pcPath != NULL);
-
-  iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS)
-    return iStatus;
-  if (Path_getDepth(oPPath) == 1)
-  {
-    return CONFLICTING_PATH;
-  }
-  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-
-  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
-
-  if (iStatus != SUCCESS)
-    return iStatus;
-  DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
-                   (int (*)(const void *, const void *))File_compareString);
-
-  if (ulIndex >= Dir_getNumFiles(oNFoundParentDir))
-  {
-    return NO_SUCH_PATH;
-  }
-  oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex);
-  *poNResult = oFile;
-
-  return SUCCESS;
-}
 
 /*
   Returns TRUE if the FT contains a file with absolute path
