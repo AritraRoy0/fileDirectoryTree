@@ -316,7 +316,7 @@ int FT_insertDir(const char *pcPath)
   {
     return INITIALIZATION_ERROR;
   }
-  
+
   iStatus = FT_containsDir(pcPath);
   fprintf(stderr, "Checkpoint 3: \n%d\n", iStatus);
   if (iStatus)
