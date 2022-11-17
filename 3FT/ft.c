@@ -80,7 +80,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
   oPPrefix = NULL;
 
   oNCurr = oNRoot;
- /*  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPPath)); */
+  /*  fprintf(stderr, "----------For pathname : %s\n", Path_getPathname(oPPath)); */
   ulDepth = Path_getDepth(oPPath);
   for (i = 2; i <= ulDepth; i++)
   {
@@ -306,11 +306,12 @@ int FT_rmDir(const char *pcPath)
 int FT_insertDir(const char *pcPath)
 {
   int iStatus;
-  Path_T oPPath;
+  Path_T oPPath, parentDirPath;
   Dir_T oNFirstNew = NULL;
   Dir_T oNCurr = NULL;
   size_t ulDepth, ulIndex;
   size_t ulNewNodes = 0;
+  File_T oFile = NULL;
 
   assert(pcPath != NULL);
 
@@ -320,8 +321,9 @@ int FT_insertDir(const char *pcPath)
     return INITIALIZATION_ERROR;
   }
 
+  return NOT_A_DIRECTORY;
+
   iStatus = FT_findDir(pcPath, &oNCurr);
-  fprintf(stderr, "Status Check: %d\n", iStatus);
   if (iStatus == SUCCESS)
   {
     return ALREADY_IN_TREE;
@@ -333,7 +335,15 @@ int FT_insertDir(const char *pcPath)
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
+
+  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
+  istatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
+  if (iStatus == SUCCESS)
+    return NOT_A_DIRECTORY;
+
+
   /* find the closest ancestor of oPPath already in the tree */
+  
   iStatus = FT_traversePath(oPPath, &oNCurr);
   if (iStatus != SUCCESS)
   {
@@ -567,9 +577,9 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     return CONFLICTING_PATH;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
-  iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS)
-    return iStatus;
+  istatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
+  if (iStatus == SUCCESS)
+    return NOT_A_DIRECTORY;
 
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
