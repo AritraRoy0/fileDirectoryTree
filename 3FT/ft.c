@@ -14,7 +14,6 @@
 #include "fileNode.h"
 #include "dirNode.h"
 
-
 /*
   A File Tree is a representation of a hierarchy of directories and files,
   represented as an AO with 3 state variables:
@@ -580,7 +579,10 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   return SUCCESS;
 }
 
+char *FT_toString(void)
+{
 
-char *FT_toString(void) {
-  return NULL;
+  if (!bIsInitialized)
+    return NULL;
+  return "";
 }
