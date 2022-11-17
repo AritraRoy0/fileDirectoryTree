@@ -316,19 +316,16 @@ int FT_insertDir(const char *pcPath)
   {
     return INITIALIZATION_ERROR;
   }
-  iStatus = Path_new(pcPath, &oPPath);
-  
-  if (FT_containsDir(Path_getPathname(oPPath)))
-  {
-    Path_free(oPPath);
-    return ALREADY_IN_TREE;
-  }
-  if (FT_containsFile(Path_getPathname(oPPath)))
-  {
-    Path_free(oPPath);
-    return ALREADY_IN_TREE;
-  }
 
+  if (FT_containsDir(pcPath))
+  {
+    return ALREADY_IN_TREE;
+  }
+  if (FT_containsFile(pcPath))
+  {
+    return ALREADY_IN_TREE;
+  }
+  iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
   /* find the closest ancestor of oPPath already in the tree */
