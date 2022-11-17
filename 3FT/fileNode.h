@@ -23,7 +23,7 @@ typedef struct fileNode *File_T;
 
 
 int File_compare(File_T oNFirst, File_T oNSecond);
-int Node_compareString(const File_T oNFirst, const char *pcSecond);
+int File_compareString(const File_T oNFirst, const char *pcSecond);
 Path_T File_getPath(File_T oNNode);
 Dir_Tree File_getParent(File_T oNNode);
 /*

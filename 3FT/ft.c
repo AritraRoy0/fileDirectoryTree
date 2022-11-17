@@ -210,7 +210,7 @@ int FT_rmFile(const char *pcPath)
 
                                              ));
 
-  if (Dir_contains(oNFoundParentDir, pcPath, ulIndex))
+  if (Dir_hasChild(oNFoundParentDir, pcPath, ulIndex))
   {
     return NOT_A_FILE;
   }
@@ -261,7 +261,7 @@ int FT_destroy(void)
 boolean FT_containsDir(const char *pcPath)
 {
   int iStatus;
-  Node_T oNFound = NULL;
+  Dir_T oNFound = NULL;
 
   assert(pcPath != NULL);
 
@@ -400,11 +400,15 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   int iStatus;
   size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath;
+  Path_T parentDirPath, oPPath;
   File_T oFile;
   assert(pcPath != NULL);
 
-  Path_prefix(pcPath, Path_getDepth(pcPath) - 1, &parentDirPath);
+  iStatus = Path_new(pcPath, &oPPath);
+  if (iStatus != SUCCESS)
+    return iStatus;
+
+  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = Ft_findDir(parentDirPath, &oNFoundParentDir);
 
@@ -412,10 +416,10 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
     return iStatus;
 
   oFile = DynArray_get(oNFoundParentDir->files,
-                       DynArray_bsearch(oNFoundParentDir->files, (char *)Path_getPathname(oPPath), pulChildID,
+                       DynArray_bsearch(oNFoundParentDir->files, (char *)Path_getPathname(oPPath), ulIndex,
                                         (int (*)(const void *, const void *))File_compareString));
 
-  if (oFile = NULL)
+  if (oFile == NULL)
   {
     return NO_SUCH_PATH;
   }
@@ -449,11 +453,10 @@ boolean FT_containsFile(const char *pcPath)
 */
 void *FT_getFileContents(const char *pcPath)
 {
-  int iStatus;
   File_T oFile;
   int iStatus;
   assert(pcPath != NULL);
-  istatus = FT_findFile(pcPath, &oFile);
+  iStatus = FT_findFile(pcPath, &oFile);
   if (iStatus != SUCCESS)
   {
     return NULL;
@@ -475,7 +478,7 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
   File_T oFile;
   int iStatus;
   assert(pcPath != NULL);
-  istatus = FT_findFile(pcPath, &oFile);
+  iStatus = FT_findFile(pcPath, &oFile);
   if (iStatus != SUCCESS)
     return NULL;
   retContent = File_getContents(oFile);
@@ -554,7 +557,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     }
     else
     {
-      File_new(oPPath, oNFoundParentDir, oFile);
+      File_new(oPPath, oNFoundParentDir, &oFile);
       File_setContents(oFile, pvContents, ulLength);
       return SUCCESS;
     }
