@@ -450,17 +450,16 @@ boolean FT_containsFile(const char *pcPath)
 void *FT_getFileContents(const char *pcPath)
 {
   int iStatus;
-  File_T oNFound = NULL;
-
+  File_T oFile;
+  int iStatus;
   assert(pcPath != NULL);
-
-  iStatus = FT_findFile(pcPath, &oNFound);
+  istatus = FT_findFile(pcPath, &oFile);
   if (iStatus != SUCCESS)
   {
-    return iStatus;
+    return NULL;
   }
 
-  return File_getContents(oNFound);
+  return File_getContents(oFile);
 }
 
 /*
@@ -473,11 +472,15 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
                              size_t ulNewLength)
 {
   void *retContent;
+  File_T oFile;
+  int iStatus;
   assert(pcPath != NULL);
+  istatus = FT_findFile(pcPath, &oFile);
+  if (iStatus != SUCCESS)
+    return NULL;
+  retContent = File_getContents(oFile);
 
-  retContent = File_getContents(pcPath);
-
-  File_replaceContents(pcPath, pvNewContents, ulNewLength);
+  File_replaceContents(oFile, pvNewContents, ulNewLength);
 
   return retContent;
 }
@@ -506,11 +509,13 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 
   assert(pcPath != NULL);
   iStatus = FT_findDir(pcPath, &foundDir);
-  if (iStatus == SUCCESS) {
+  if (iStatus == SUCCESS)
+  {
     *pbIsFile = FALSE;
     return SUCCESS;
   }
-  if (FT_findFile(pcPath, &foundFile) == SUCCESS){
+  if (FT_findFile(pcPath, &foundFile) == SUCCESS)
+  {
     *pbIsFile = TRUE;
     *pulSize = foundFile->conLen;
     return SUCCESS;
@@ -521,7 +526,6 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 {
   int iStatus;
-  size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
   Path_T parentDirPath, oPPath;
   File_T oFile;
@@ -530,8 +534,10 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
-
-  Path_prefix(pcPath, Path_getDepth(pcPath) - 1, &parentDirPath);
+  iStatus = Path_new(pcPath, &oPPath);
+  if (iStatus != SUCCESS)
+    return iStatus;
+  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
@@ -542,28 +548,29 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* appropiate parent directory found */
   if (iStatus == SUCCESS)
   {
-    if (FT_containsFile(pcPath) {
+    if (FT_containsFile(pcPath))
+    {
       return ALREADY_IN_TREE;
-    } else {
+    }
+    else
+    {
       File_new(oPPath, oNFoundParentDir, oFile);
       File_setContents(oFile, pvContents, ulLength);
       return SUCCESS;
     }
   }
 
-  istatus = FT_insertDir(parentDirPath);
+  iStatus = FT_insertDir(Path_getPathName(parentDirPath));
   if (iStatus != SUCCESS)
   {
     return iStatus;
   }
-  istatus = FT_findDir(parentDirPath, oNFoundParentDir);
+  istatus = FT_findDir(Path_getPathName(parentDirPath), &oNFoundParentDir);
   if (iStatus != SUCCESS)
   {
     return iStatus;
   }
-  File_new(oPPath, oNFoundParentDir, oFile);
+  File_new(oPPath, oNFoundParentDir, &oFile);
   File_setContents(oFile, pvContents, ulLength);
   return SUCCESS;
 }
-
-

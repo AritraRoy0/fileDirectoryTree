@@ -3,8 +3,8 @@
 /* Author: Roy Mazumder & Roshaan Khalid                              */
 /*--------------------------------------------------------------------*/
 
-#ifndef NODE_INCLUDED
-#define NODE_INCLUDED
+#ifndef DIRNODE_INCLUDED
+#define DIRNODE_INCLUDED
 
 #include <stddef.h>
 #include "a4def.h"
