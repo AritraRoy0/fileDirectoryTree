@@ -329,3 +329,17 @@ DynArray_T Dir_getFiles(Dir_T oNParent)
 
     return oNParent->files;
 }
+
+boolean Dir_hasSubDir(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
+{
+
+    assert(oNParent != NULL);
+    assert(oPPath != NULL);
+    assert(pulChildID != NULL);
+
+    /* *pulChildID is the index into oNParent->oDChildren */
+    return = DynArray_bsearch(oNParent->subDirs,
+                              (char *)Path_getPathname(oPPath), pulChildID,
+                              (int (*)(const void *, const void *))Dir_compareString);
+                              
+}

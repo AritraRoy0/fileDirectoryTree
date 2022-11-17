@@ -97,6 +97,6 @@ boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
 DynArray_T Dir_getFiles(Dir_T oNParent);
 
-
+boolean Dir_hasSubDir(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
 #endif
