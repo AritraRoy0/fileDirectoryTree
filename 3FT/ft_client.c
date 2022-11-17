@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "ft.h"
+#include "a4def.h"
 
 /* Tests the FT implementation with an assortment of checks.
    Prints the status of the data structure along the way to stderr.
@@ -91,14 +92,12 @@ int main(void)
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_getFileContents("1root/2second/3gfile") == NULL);
 
-
-
-   fprintf(stderr, "Checkpoint 1:");
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
-      fprintf(stderr, "Checkpoint 2:");
+   fprintf(stderr, "Checkpoint 2: \n");
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==
           ALREADY_IN_TREE);
-          
+
    fprintf(stderr, "Checkpoint 3:");
 
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
