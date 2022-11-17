@@ -314,8 +314,9 @@ int FT_insertDir(const char *pcPath)
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
-  
-  if (FT_containsDir(pcPath) || FT_containsFile(pcPath)){
+
+  if (FT_containsDir(pcPath) || FT_containsFile(pcPath))
+  {
     return ALREADY_IN_TREE;
   }
 
@@ -546,6 +547,10 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
+  if (FT_containsDir(pcPath) || FT_containsFile(pcPath))
+  {
+    return ALREADY_IN_TREE;
+  }
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
