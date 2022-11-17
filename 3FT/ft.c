@@ -584,8 +584,9 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 
 char *FT_toString(void)
 {
-  char *ret = "";
+  char *ret = calloc(10, sizeof(char));
   if (!bIsInitialized)
     return NULL;
+  *ret = "";
   return ret;
 }
