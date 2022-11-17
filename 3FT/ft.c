@@ -317,8 +317,6 @@ int FT_insertDir(const char *pcPath)
     return INITIALIZATION_ERROR;
   }
   iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS)
-    return iStatus;
 
   if (FT_containsDir(Path_getPathname(oPPath)))
   {
@@ -330,7 +328,8 @@ int FT_insertDir(const char *pcPath)
     Path_free(oPPath);
     return ALREADY_IN_TREE;
   }
-
+  if (iStatus != SUCCESS)
+    return iStatus;
   /* find the closest ancestor of oPPath already in the tree */
   iStatus = FT_traversePath(oPPath, &oNCurr);
   if (iStatus != SUCCESS)
