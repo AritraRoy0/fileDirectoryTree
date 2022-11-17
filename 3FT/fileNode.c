@@ -9,7 +9,6 @@
 #include "dynarray.h"
 #include "fileNode.h"
 #include "dirNode.h"
-#include "checkerDT.h"
 #include "path.h"
 
 /* A file node in a DT */
