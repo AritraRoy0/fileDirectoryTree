@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include "a4def.h"
 #include "dynarray.h"
 #include "fileNode.h"
 #include "dirNode.h"

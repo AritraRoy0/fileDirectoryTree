@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include "a4def.h"
 #include "dynarray.h"
 #include "dirNode.h"
 #include "fileNode.h"
@@ -87,7 +88,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    {
       size_t ulSharedDepth;
 
-      oPParentPath = oNParent->path;
+      oPParentPath = Dir_getPath(oNParent);
       ulParentDepth = Path_getDepth(oPParentPath);
       ulSharedDepth = Path_getSharedPrefixDepth(psNew->path,
                                                 oPParentPath);
@@ -131,15 +132,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
    }
    psNew->parentDir = oNParent;
 
-   /* initialize the new node */
-   psNew->files = DynArray_new(0);
-   if (psNew->files == NULL)
-   {
-      Path_free(psNew->path);
-      free(psNew);
-      *poNResult = NULL;
-      return MEMORY_ERROR;
-   }
+
 
    /* Link into parent's children list */
    if (oNParent != NULL)
