@@ -82,7 +82,7 @@ int Dir_rmSubDir(Dir_T oNParent, size_t ulChildID,
                  Dir_T *poNResult);
 
 /* Returns the number of children that oNParent has. */
-int  Dir_addFile(Dir_T oNParent);
+int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex);
 
 /*
   Returns an int SUCCESS status and sets *poNResult to be the child
