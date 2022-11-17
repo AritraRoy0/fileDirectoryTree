@@ -166,10 +166,10 @@ int File_free(File_T oNNode)
    if (oNNode->parentDir != NULL)
    {
       if (DynArray_bsearch(
-              oNNode->parentDir->files,
+              Dir_getFiles(oNNode->parentDir),
               oNNode, &ulIndex,
               (int (*)(const void *, const void *))File_compare))
-         (void)DynArray_removeAt(oNNode->oNParent->files,
+         (void)DynArray_removeAt(Dir_getFiles(oNNode->parentDir),
                                  ulIndex);
    }
 
@@ -207,7 +207,7 @@ int File_setContents(File_T oFile, void *contents, size_t length) {
 
    oFile->contents = calloc(length, sizeof(char));
    if (oFile->contents == NULL) {
-      return FAILURE;
+      return MEMORY_ERROR;
    }
    oFile->contents = contents;
    oFile->conLen = length;
