@@ -284,7 +284,7 @@ static int Dir_compareString(const Dir_T oNFirst,
   or  MEMORY_ERROR if allocation fails adding oNChild to the array.
 */
 
-static int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
+int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex)
 {
     assert(oNParent != NULL);
     assert(oNChild != NULL);
