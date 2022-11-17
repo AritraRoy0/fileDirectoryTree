@@ -420,7 +420,7 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   if (iStatus != SUCCESS)
     return iStatus;
   DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
-                                        (int (*)(const void *, const void *))File_compareString)
+                                        (int (*)(const void *, const void *))File_compareString);
                                         
   
 
