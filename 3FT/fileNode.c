@@ -7,8 +7,8 @@
 #include <assert.h>
 #include <string.h>
 #include "dynarray.h"
-#include "fileNode.h"
 #include "dirNode.h"
+#include "fileNode.h"
 #include "path.h"
 
 /* A file node in a DT */

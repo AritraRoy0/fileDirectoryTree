@@ -11,8 +11,8 @@
 
 #include "dynarray.h"
 #include "path.h"
-#include "dirNode.h"
 #include "fileNode.h"
+#include "dirNode.h"
 #include "ft.h"
 
 /*
