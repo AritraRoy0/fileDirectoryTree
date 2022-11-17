@@ -82,7 +82,9 @@ int main(void)
    assert(FT_containsDir("1root/2child") == TRUE);
    fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_containsFile("1root/2child") == FALSE);
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
+   fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_containsFile("1root/2child/3gkid") == FALSE);
    fprintf(stderr, "Checkpoint 1:\n");
    assert(FT_insertFile("1root/2second/3gfile", NULL, 0) == SUCCESS);
