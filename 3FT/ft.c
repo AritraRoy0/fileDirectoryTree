@@ -201,7 +201,7 @@ int FT_rmFile(const char *pcPath)
     return iStatus;
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
-  iStatus = FT_findDir(parentDirPath, &oNFoundParentDir);
+  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
   if (iStatus != SUCCESS)
     return iStatus;
@@ -267,7 +267,7 @@ boolean FT_containsDir(const char *pcPath)
 
   assert(pcPath != NULL);
 
-  iStatus = Ft_findDir(pcPath, &oNFound);
+  iStatus = FT_findDir(pcPath, &oNFound);
   return (boolean)(iStatus == SUCCESS);
 }
 
@@ -417,8 +417,8 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   if (iStatus != SUCCESS)
     return iStatus;
 
-  oFile = DynArray_get(oNFoundParentDir->files,
-                       DynArray_bsearch(oNFoundParentDir->files, (char *)Path_getPathname(oPPath), &ulIndex,
+  oFile = DynArray_get(Dir_getFiles(oNFoundParentDir),
+                       DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
                                         (int (*)(const void *, const void *))File_compareString));
 
   if (oFile == NULL)
