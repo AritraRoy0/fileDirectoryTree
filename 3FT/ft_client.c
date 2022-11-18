@@ -174,15 +174,18 @@ int main(void)
    /* removing the root doesn't uninitialize the structure */
    assert(FT_rmDir("1anotherroot") == CONFLICTING_PATH);
    
-   fprintf(stderr, "\nCheck 2.1------------------:\n");
    assert(FT_rmDir("1root") == SUCCESS);
+   
+   fprintf(stderr, "\nCheck 2.1------------------:\n");
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
+      fprintf(stderr, "\nCheck 2.2------------------:\n");
    assert(FT_containsDir("1root/2child") == FALSE);
+   
+   fprintf(stderr, "\nCheck 2.3------------------:\n");
    assert(FT_containsDir("1root") == FALSE);
-   fprintf(stderr, "\nCheck 2.2------------------:\n");
+
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
    assert(FT_rmDir("1anotherroot") == NO_SUCH_PATH);
-   fprintf(stderr, "\nCheck 2.3------------------:\n");
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
