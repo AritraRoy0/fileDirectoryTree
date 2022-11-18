@@ -63,9 +63,6 @@ int File_setContents(File_T oFile, void *contents, size_t length);
 /* Returns a pointer to the contents of a file */
 void *File_getContents(File_T oFile);
 
-/* Replaces contents of a file with new content and 
-Returns a pointer to the new contents of a file */
-void *File_replaceContents(File_T oFile, void *newContents, size_t newLength);
 
 size_t File_getLength(File_T oFile);
 

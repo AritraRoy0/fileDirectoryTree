@@ -510,7 +510,7 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
     return NULL;
   retContent = File_getContents(oFile);
 
-  File_replaceContents(oFile, pvNewContents, ulNewLength);
+  File_setContents(oFile, pvNewContents, ulNewLength);
 
   return retContent;
 }

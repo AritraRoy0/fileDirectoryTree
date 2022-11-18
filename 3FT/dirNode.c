@@ -313,7 +313,7 @@ boolean Dir_hasFile(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
     assert(oPPath != NULL);
     assert(pulChildID != NULL);
 
-  ret2 = DynArray_bsearch(oNParent->files,
+    ret2 = DynArray_bsearch(oNParent->files,
                             (char *)Path_getPathname(oPPath), pulChildID,
                             (int (*)(const void *, const void *))File_compareString);
     return (boolean)ret2;
