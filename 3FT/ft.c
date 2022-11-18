@@ -229,7 +229,7 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex);
   *poNResult = oFile;
 
-  if (!Path_stringCompare(File_getPath(oFile), pcPath))
+  if (!Path_compareString(File_getPath(oFile), pcPath))
   {
     return SUCCESS;
   }
