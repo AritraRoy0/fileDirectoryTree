@@ -175,13 +175,13 @@ int main(void)
    assert(FT_rmDir("1anotherroot") == CONFLICTING_PATH);
    assert(FT_rmDir("1root") == SUCCESS);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
-   printf(stderr, "\nCheck 2.1------------------:\n");
+   fprintf(stderr, "\nCheck 2.1------------------:\n");
    assert(FT_containsDir("1root/2child") == FALSE);
    assert(FT_containsDir("1root") == FALSE);
-   printf(stderr, "\nCheck 2.2------------------:\n");
+   fprintf(stderr, "\nCheck 2.2------------------:\n");
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
    assert(FT_rmDir("1anotherroot") == NO_SUCH_PATH);
-   printf(stderr, "\nCheck 2.3------------------:\n");
+   fprintf(stderr, "\nCheck 2.3------------------:\n");
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
