@@ -565,11 +565,17 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
-  if (FT_containsDir(pcPath) || FT_containsFile(pcPath))
+  if (FT_containsDir(pcPath) )
   {
-    fprintf(stderr, "Already in tree\n");
+    fprintf(stderr, "Already in tree dir\n");
     return ALREADY_IN_TREE;
   }
+  if (FT_containsFile(pcPath)){
+    fprintf(stderr, "Already in tree file\n");
+    return ALREADY_IN_TREE;
+  }
+
+
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
