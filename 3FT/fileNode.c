@@ -109,7 +109,7 @@ int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult)
          return NO_SUCH_PATH;
       }
       /* parent must not already have child with this path */
-      if (Dir_hasChild(oNParent, oPPath, &ulIndex))
+      if (Dir_hasFile(oNParent, oPPath, &ulIndex))
       {
          Path_free(psNew->path);
          free(psNew);
