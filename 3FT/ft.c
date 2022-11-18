@@ -374,13 +374,15 @@ int FT_insertDir(const char *pcPath)
   {
     return ALREADY_IN_TREE;
   }
+  if (Path_getDepth(oPPath) > 1)
+  {
+    Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
-  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
+    if (FT_containsFile(Path_getPathname(parentDirPath)))
+      return NOT_A_DIRECTORY;
 
-  if (FT_containsFile(Path_getPathname(parentDirPath)))
-    return NOT_A_DIRECTORY;
-
-  /* find the closest ancestor of oPPath already in the tree */
+    /* find the closest ancestor of oPPath already in the tree */
+  }
 
   iStatus = FT_traversePath(oPPath, &oNCurr);
   if (iStatus != SUCCESS)
