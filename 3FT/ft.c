@@ -188,28 +188,35 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   File_T oFile;
   assert(pcPath != NULL);
 
-  iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS)
-    return iStatus;
-
   if (FT_containsDir(pcPath))
+  {
+    *poNResult = NULL;
     return NOT_A_FILE;
+  }
 
+  iStatus = Path_new(pcPath, &oPPath);
+  if (iStatus != SUCCESS){
+    *poNResult = NULL;
+    return iStatus;
+  }
   if (Path_getDepth(oPPath) == 1)
   {
+    *poNResult = NULL;
     return CONFLICTING_PATH;
   }
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
-  if (iStatus != SUCCESS)
-    return iStatus;
+  if (iStatus != SUCCESS) {
+    *poNResult = NULL;
+    return iStatus;}
   DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
                    (int (*)(const void *, const void *))File_compareString);
 
   if (ulIndex >= Dir_getNumFiles(oNFoundParentDir))
   {
+    *poNResult = NULL;
     return NO_SUCH_PATH;
   }
   oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex);
@@ -239,7 +246,8 @@ int FT_rmFile(const char *pcPath)
   assert(pcPath != NULL);
 
   iStatus = FT_findFile(pcPath, &oFile);
-  if(iStatus != SUCCESS){
+  if (iStatus != SUCCESS)
+  {
     return iStatus;
   }
   File_free(oFile);
@@ -560,7 +568,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 
   if (Path_getDepth(oPPath) == 1)
     return CONFLICTING_PATH;
-  
+
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
