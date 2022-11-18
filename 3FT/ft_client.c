@@ -88,9 +88,7 @@ int main(void)
 
    assert(FT_insertFile("1root/2second/3gfile", NULL, 0) == SUCCESS);
  
-        /*     ---------------------     */
-   assert(FT_containsDir("1root/2child/3gkid") == TRUE);
-          /*     ---------------------     */  
+
    assert(FT_containsDir("1root/2second") == TRUE);
    assert(FT_containsFile("1root/2second") == FALSE);
    
@@ -99,14 +97,11 @@ int main(void)
 
    assert(FT_getFileContents("1root/2second/3gfile") == NULL);
 
-   fprintf(stderr, "Checkpoint 1:--------------------------------\n");
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
-   fprintf(stderr, "Checkpoint 2: -------------------------------\n");
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==
           ALREADY_IN_TREE);
 
-   fprintf(stderr, "Checkpoint 3:");
 
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
    assert(FT_insertDir("1otherroot/2d") == CONFLICTING_PATH);
@@ -158,7 +153,7 @@ int main(void)
       NO_SUCH_PATH, but on a path that does exist with the right
       flavor should return SUCCESS and remove entire subtree rooted at
       that path
-   */
+   */f
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
