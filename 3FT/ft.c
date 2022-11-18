@@ -611,7 +611,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   }
   File_new(oPPath, oNFoundParentDir, &oFile);
   File_setContents(oFile, pvContents, ulLength);
-  ulcount++;
+  ulCount++;
   return SUCCESS;
 }
 
