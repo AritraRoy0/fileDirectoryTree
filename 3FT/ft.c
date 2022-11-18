@@ -137,15 +137,11 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   assert(pcPath != NULL);
   assert(poNResult != NULL);
 
-
-
-
   if (!bIsInitialized)
   {
     *poNResult = NULL;
     return INITIALIZATION_ERROR;
   }
-
 
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
@@ -168,7 +164,8 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
     *poNResult = NULL;
     return NO_SUCH_PATH;
   }
-  if (Dir_hasFile(oNFound, oPPath, &ulChildID)){
+  if (Dir_hasFile(oNFound, oPPath, &ulChildID))
+  {
     return NOT_A_DIRECTORY;
   }
 
@@ -202,7 +199,8 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   }
 
   iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS){
+  if (iStatus != SUCCESS)
+  {
     *poNResult = NULL;
     return iStatus;
   }
@@ -215,9 +213,11 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
 
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
-  if (iStatus != SUCCESS) {
+  if (iStatus != SUCCESS)
+  {
     *poNResult = NULL;
-    return iStatus;}
+    return iStatus;
+  }
   DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
                    (int (*)(const void *, const void *))File_compareString);
 
@@ -588,17 +588,11 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* appropiate parent directory found */
   if (iStatus == SUCCESS)
   {
-    if (FT_containsFile(pcPath))
-    {
-      return ALREADY_IN_TREE;
-    }
-    else
-    {
-      File_new(oPPath, oNFoundParentDir, &oFile);
-      File_setContents(oFile, pvContents, ulLength);
-      ulCount++;
-      return SUCCESS;
-    }
+
+    File_new(oPPath, oNFoundParentDir, &oFile);
+    File_setContents(oFile, pvContents, ulLength);
+    ulCount++;
+    return SUCCESS;
   }
 
   iStatus = FT_insertDir(Path_getPathname(parentDirPath));

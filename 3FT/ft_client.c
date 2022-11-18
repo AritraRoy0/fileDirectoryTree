@@ -176,12 +176,10 @@ int main(void)
    
    assert(FT_rmDir("1root") == SUCCESS);
    
-   fprintf(stderr, "\nCheck 2.1------------------:\n");
+
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
-      fprintf(stderr, "\nCheck 2.2------------------:\n");
    assert(FT_containsDir("1root/2child") == FALSE);
    
-   fprintf(stderr, "\nCheck 2.3------------------:\n");
    assert(FT_containsDir("1root") == FALSE);
 
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
@@ -189,7 +187,6 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
-   fprintf(stderr, "\nCheck 2.4------------------:\n");
    /* checking that file contents work as expected */
    assert(FT_insertDir("1root") == SUCCESS);
    assert(FT_insertFile("1root/H", "hello, world!",
