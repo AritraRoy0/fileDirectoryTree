@@ -567,6 +567,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     return INITIALIZATION_ERROR;
   if (FT_containsDir(pcPath) || FT_containsFile(pcPath))
   {
+    fprintf(stderr, "Already in tree\n");
     return ALREADY_IN_TREE;
   }
   iStatus = Path_new(pcPath, &oPPath);
@@ -574,15 +575,20 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
     return iStatus;
 
   if (Path_getDepth(oPPath) == 1)
-    return CONFLICTING_PATH;
+  {
 
+    fprintf(stderr, "Already in tree\n");
+    return CONFLICTING_PATH;
+  }
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
 
   if (iStatus == SUCCESS)
+  {
+    fprintf(stderr, "Not a directory\n");
     return NOT_A_DIRECTORY;
-
+  }
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
 
   /* appropiate parent directory found */
