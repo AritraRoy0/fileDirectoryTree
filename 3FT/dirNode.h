@@ -93,7 +93,7 @@ int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex);
 int Dir_rmFile(Dir_T oNParent, size_t ulChildID,
                Dir_T *poNResult);
 
-boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
+boolean Dir_hasFile(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
 DynArray_T Dir_getFiles(Dir_T oNParent);
 

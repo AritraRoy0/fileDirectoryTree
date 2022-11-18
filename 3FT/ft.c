@@ -133,7 +133,7 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   Path_T oPPath = NULL;
   Dir_T oNFound = NULL;
   int iStatus;
-
+  size_t ulChildID;
   assert(pcPath != NULL);
   assert(poNResult != NULL);
 
@@ -144,11 +144,6 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   {
     *poNResult = NULL;
     return INITIALIZATION_ERROR;
-  }
-
-  if (FT_containsFile(pcPath)) {
-    *poNResult = NULL;
-    return NOT_A_DIRECTORY;
   }
 
 
@@ -172,6 +167,9 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
     Path_free(oPPath);
     *poNResult = NULL;
     return NO_SUCH_PATH;
+  }
+  if (Dir_hasFile(oNFound, oPPath, &ulChildID)){
+    return NOT_A_DIRECTORY;
   }
 
   if (Path_comparePath(Dir_getPath(oNFound), oPPath) != 0)

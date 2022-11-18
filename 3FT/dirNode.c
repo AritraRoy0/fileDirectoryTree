@@ -304,23 +304,19 @@ int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex)
         return MEMORY_ERROR;
 }
 
-boolean Dir_hasChild(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
+boolean Dir_hasFile(Dir_T oNParent, Path_T oPPath, size_t *pulChildID)
 {
 
-    boolean ret1, ret2;
+    boolean ret2;
 
     assert(oNParent != NULL);
     assert(oPPath != NULL);
     assert(pulChildID != NULL);
 
-    /* *pulChildID is the index into oNParent->oDChildren */
-    ret1 = DynArray_bsearch(oNParent->subDirs,
-                            (char *)Path_getPathname(oPPath), pulChildID,
-                            (int (*)(const void *, const void *))Dir_compareString);
-    ret2 = DynArray_bsearch(oNParent->files,
+  ret2 = DynArray_bsearch(oNParent->files,
                             (char *)Path_getPathname(oPPath), pulChildID,
                             (int (*)(const void *, const void *))File_compareString);
-    return (boolean)(ret1 || ret2);
+    return (boolean)ret2;
 }
 
 DynArray_T Dir_getFiles(Dir_T oNParent)
