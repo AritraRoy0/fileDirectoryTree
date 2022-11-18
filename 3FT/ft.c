@@ -361,11 +361,6 @@ int FT_insertDir(const char *pcPath)
 
   return NOT_A_DIRECTORY;
 
-  iStatus = FT_findDir(pcPath, &oNCurr);
-  if (iStatus == SUCCESS)
-  {
-    return ALREADY_IN_TREE;
-  }
   if (FT_containsFile(pcPath))
   {
     return ALREADY_IN_TREE;
@@ -374,9 +369,15 @@ int FT_insertDir(const char *pcPath)
   if (iStatus != SUCCESS)
     return iStatus;
 
-  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-  iStatus = FT_findFile(Path_getPathname(parentDirPath), &oFile);
+  iStatus = FT_findDir(pcPath, &oNCurr);
   if (iStatus == SUCCESS)
+  {
+    return ALREADY_IN_TREE;
+  }
+
+  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
+
+  if (FT_containsFile(Path_getPathname(parentDirPath)))
     return NOT_A_DIRECTORY;
 
   /* find the closest ancestor of oPPath already in the tree */
@@ -456,7 +457,6 @@ int FT_insertDir(const char *pcPath)
 
   return SUCCESS;
 }
-
 
 /*
   Returns TRUE if the FT contains a file with absolute path
