@@ -242,17 +242,15 @@ int FT_rmFile(const char *pcPath)
   {
     return NOT_A_FILE;
   }
-  
+
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
-
 
   if (Path_getDepth(oPPath) == 1)
   {
     return CONFLICTING_PATH;
   }
-
 
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
@@ -260,17 +258,11 @@ int FT_rmFile(const char *pcPath)
 
   if (iStatus != SUCCESS)
     return iStatus;
+  DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
+                   (int (*)(const void *, const void *))File_compareString);
+  oFile = DynArray_removeAt(Dir_getFiles(oNFoundParentDir), ulIndex);
 
-  oFile = DynArray_removeAt(Dir_getFiles(oNFoundParentDir),
-                            DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
-                                             (int (*)(const void *, const void *))File_compareString
 
-                                             ));
-
-  if (FT_containsDir(pcPath))
-  {
-    return NOT_A_FILE;
-  }
   File_free(oFile);
 
   ulCount--;
