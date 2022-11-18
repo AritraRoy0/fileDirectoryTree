@@ -234,15 +234,12 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
 int FT_rmFile(const char *pcPath)
 {
 
-  int iStatus;
-  size_t ulIndex;
-  Dir_T oNFoundParentDir = NULL;
   File_T oFile;
   assert(pcPath != NULL);
 
-  FT_findFile(pcPath, &ofile);
+  FT_findFile(pcPath, &oFile);
 
-  File_free(ofile);
+  File_free(oFile);
 
   ulCount--;
 
