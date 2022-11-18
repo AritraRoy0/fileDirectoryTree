@@ -349,7 +349,6 @@ int FT_insertDir(const char *pcPath)
   Dir_T oNCurr = NULL;
   size_t ulDepth, ulIndex;
   size_t ulNewNodes = 0;
-  File_T oFile = NULL;
 
   assert(pcPath != NULL);
 
@@ -358,8 +357,6 @@ int FT_insertDir(const char *pcPath)
   {
     return INITIALIZATION_ERROR;
   }
-
-  return NOT_A_DIRECTORY;
 
   if (FT_containsFile(pcPath))
   {
