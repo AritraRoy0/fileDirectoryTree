@@ -237,13 +237,23 @@ int FT_rmFile(const char *pcPath)
   Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
+
+  if (FT_containsDir(pcPath))
+  {
+    return NOT_A_FILE;
+  }
+  
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
+
+
   if (Path_getDepth(oPPath) == 1)
   {
     return CONFLICTING_PATH;
   }
+
+
   Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
 
   iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
@@ -257,7 +267,7 @@ int FT_rmFile(const char *pcPath)
 
                                              ));
 
-  if (Dir_hasChild(oNFoundParentDir, oPPath, &ulIndex))
+  if (FT_containsDir(pcPath))
   {
     return NOT_A_FILE;
   }
@@ -321,6 +331,11 @@ int FT_rmDir(const char *pcPath)
   Dir_T oNFound = NULL;
 
   assert(pcPath != NULL);
+
+  if (FT_containsFile(pcPath))
+  {
+    return NOT_A_DIRECTORY;
+  }
 
   iStatus = FT_findDir(pcPath, &oNFound);
 
