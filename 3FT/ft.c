@@ -191,6 +191,10 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
     return iStatus;
+
+  if (FT_containsDir(pcPath))
+    return NOT_A_FILE;
+
   if (Path_getDepth(oPPath) == 1)
   {
     return CONFLICTING_PATH;
@@ -233,37 +237,12 @@ int FT_rmFile(const char *pcPath)
   int iStatus;
   size_t ulIndex;
   Dir_T oNFoundParentDir = NULL;
-  Path_T parentDirPath = NULL;
-  Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
 
-  if (FT_containsDir(pcPath))
-  {
-    return NOT_A_FILE;
-  }
+  FT_findFile(pcPath, &ofile);
 
-  iStatus = Path_new(pcPath, &oPPath);
-  if (iStatus != SUCCESS)
-    return iStatus;
-
-  if (Path_getDepth(oPPath) == 1)
-  {
-    return CONFLICTING_PATH;
-  }
-
-  Path_prefix(oPPath, Path_getDepth(oPPath) - 1, &parentDirPath);
-
-  iStatus = FT_findDir(Path_getPathname(parentDirPath), &oNFoundParentDir);
-
-  if (iStatus != SUCCESS)
-    return iStatus;
-  DynArray_bsearch(Dir_getFiles(oNFoundParentDir), (char *)Path_getPathname(oPPath), &ulIndex,
-                   (int (*)(const void *, const void *))File_compareString);
-  oFile = DynArray_removeAt(Dir_getFiles(oNFoundParentDir), ulIndex);
-
-
-  File_free(oFile);
+  File_free(ofile);
 
   ulCount--;
 
