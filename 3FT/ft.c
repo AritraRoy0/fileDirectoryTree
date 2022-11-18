@@ -229,7 +229,15 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   oFile = DynArray_get(Dir_getFiles(oNFoundParentDir), ulIndex);
   *poNResult = oFile;
 
-  return SUCCESS;
+  if (!Path_stringCompare(File_getPath(oFile), pcPath))
+  {
+    return SUCCESS;
+  }
+  else
+  {
+    *poNResult = NULL;
+    return NO_SUCH_PATH;
+  }
 }
 
 /*--------------------------------------------------------------------*/
@@ -565,16 +573,16 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
     return INITIALIZATION_ERROR;
-  if (FT_containsDir(pcPath) )
+  if (FT_containsDir(pcPath))
   {
     fprintf(stderr, "Already in tree dir\n");
     return ALREADY_IN_TREE;
   }
-  if (FT_containsFile(pcPath)){
+  if (FT_containsFile(pcPath))
+  {
     fprintf(stderr, "Already in tree file\n");
     return ALREADY_IN_TREE;
   }
-
 
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
