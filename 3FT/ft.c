@@ -235,10 +235,13 @@ int FT_rmFile(const char *pcPath)
 {
 
   File_T oFile;
+  int iStatus;
   assert(pcPath != NULL);
 
-  FT_findFile(pcPath, &oFile);
-
+  iStatus = FT_findFile(pcPath, &oFile);
+  if(iStatus != SUCCESS){
+    return iStatus;
+  }
   File_free(oFile);
 
   ulCount--;
