@@ -137,11 +137,20 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   assert(pcPath != NULL);
   assert(poNResult != NULL);
 
+
+
+
   if (!bIsInitialized)
   {
     *poNResult = NULL;
     return INITIALIZATION_ERROR;
   }
+
+  if (FT_containsFile(pcPath)) {
+    *poNResult = NULL;
+    return NOT_A_DIRECTORY;
+  }
+
 
   iStatus = Path_new(pcPath, &oPPath);
   if (iStatus != SUCCESS)
