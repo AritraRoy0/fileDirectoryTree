@@ -153,7 +153,7 @@ int main(void)
       NO_SUCH_PATH, but on a path that does exist with the right
       flavor should return SUCCESS and remove entire subtree rooted at
       that path
-   */f
+   */
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
