@@ -647,7 +647,7 @@ static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
 {
   size_t c;
   File_T oFile;
-  Dir_t oNChild = NULL;
+  Dir_T oNChild = NULL;
 
   if (n != NULL)
   {
@@ -676,7 +676,7 @@ static size_t DT_preOrderStringTraveral(Dir_T n, size_t i, char *retString)
 
   size_t c;
   File_T oFile;
-  Dir_t oNChild = NULL;
+  Dir_T oNChild = NULL;
 
   assert(retString != NULL);
   if (n != NULL)
