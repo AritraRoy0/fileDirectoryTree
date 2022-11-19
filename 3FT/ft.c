@@ -654,7 +654,7 @@ static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
     i++;
     for (c = 0; c < Dir_getNumFiles(n); c++)
     {
-      (void)Dir_getFile(n, c, oFile);
+      (void)Dir_getFile(n, c, &oFile);
       *ulLength += (Path_getStrLength(File_getPath(oFile)) + 1);
       i++;
     }
