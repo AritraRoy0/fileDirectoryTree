@@ -253,9 +253,11 @@ int main(void)
    assert(FT_insertDir("1root/y/CHILD3DIR") == SUCCESS);
    assert(FT_insertFile("1root/y/CHILD1FILE", NULL, 0) == SUCCESS);
    assert(FT_insertDir("1root/y/CHILD2DIR/CHILD4DIR") == SUCCESS);
+      fprintf(stderr, "Checkpoint 4.4:--------------------------------------\n");
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 4.5:\n%s\n", temp);
    free(temp);
+      fprintf(stderr, "Checkpoint 4.4:--------------------------------------\n");
 
    assert(FT_destroy() == SUCCESS);
    assert(FT_destroy() == INITIALIZATION_ERROR);
