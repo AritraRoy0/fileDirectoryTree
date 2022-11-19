@@ -239,13 +239,14 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 4.3:\n%s\n", temp);
    free(temp);
-   fprintf(stderr, "Checkpoint 4.4:--------------------------------------\n");
    assert(FT_insertFile("1root/x/B", "Thompson",
                         strlen("Thompson") + 1) == SUCCESS);
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 4.4:\n%s\n", temp);
    
    free(temp);
+   
+   fprintf(stderr, "Checkpoint 4.4:--------------------------------------\n");
    assert(FT_insertDir("1root/y/CHILD1DIR") == SUCCESS);
    assert(FT_insertDir("1root/y/CHILD2DIR") == SUCCESS);
    assert(FT_insertFile("1root/y/CHILD2FILE", NULL, 0) == SUCCESS);
