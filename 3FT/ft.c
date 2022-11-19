@@ -643,7 +643,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   Returns the next unused index in d after the insertion(s).
 */
 
-static size_t DT_preOrderTraversal(Node_T n, size_t i, size_t *ulLength)
+static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
 {
   size_t c;
   File_T oFile;
@@ -665,7 +665,7 @@ static size_t DT_preOrderTraversal(Node_T n, size_t i, size_t *ulLength)
       iStatus = Dir_getSubDir(n, c, &oNChild);
       *ulLength += (Path_getStrLength(Dir_getPath(oNChild)) + 1);
       assert(iStatus == SUCCESS);
-      i = DT_preOrderTraversal(oNChild, d, i);
+      i = DT_preOrderTraversal(oNChild, i, ulLength);
     }
   }
   return i;
@@ -698,24 +698,12 @@ static size_t DT_preOrderStringTraveral(Dir_T n, size_t i, char *retString)
       iStatus = Dir_getSubDir(n, c, &oNChild);
       assert(iStatus == SUCCESS);
 
-      i = DT_preOrderTraversal(oNChild, d, i);
+      i = DT_preOrderStringTraversal(oNChild, i, retString);
     }
   }
   return i;
 }
 
-/*
-  Alternate version of strlen that uses pulAcc as an in-out parameter
-  to accumulate a string length, rather than returning the length of
-  oNNode's path, and also always adds one addition byte to the sum.
-*/
-static void DT_strlenAccumulate(Node_T oNNode, size_t *pulAcc)
-{
-  assert(pulAcc != NULL);
-
-  if (oNNode != NULL)
-    *pulAcc += (Path_getStrLength(Node_getPath(oNNode)) + 1);
-}
 
 char *FT_toString(void)
 {
