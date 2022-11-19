@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "dirnode.h": "c"
+        "dirnode.h": "c",
+        "a4def.h": "c",
+        "dynarray.h": "c"
     }
 }

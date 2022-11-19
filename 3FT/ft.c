@@ -631,12 +631,111 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   return SUCCESS;
 }
 
+/* --------------------------------------------------------------------
+
+  The following auxiliary functions are used for generating the
+  string representation of the DT.
+*/
+
+/*
+  Performs a pre-order traversal of the tree rooted at n,
+  inserting each payload to DynArray_T d beginning at index i.
+  Returns the next unused index in d after the insertion(s).
+*/
+
+static size_t DT_preOrderTraversal(Node_T n, size_t i, size_t *ulLength)
+{
+  size_t c;
+  File_T oFile;
+  Dir_t oNChild = NULL;
+
+  if (n != NULL)
+  {
+    i++;
+    for (c = 0; c < Dir_getNumFiles(n); c++)
+    {
+      (void)Dir_getFile(n, c, oFile);
+      *ulLength += (Path_getStrLength(File_getPath(oFile)) + 1);
+      i++;
+    }
+    for (c = 0; c < Dir_getNumSubDirs(n); c++)
+    {
+      int iStatus;
+      oNChild = NULL;
+      iStatus = Dir_getSubDir(n, c, &oNChild);
+      *ulLength += (Path_getStrLength(Dir_getPath(oNChild)) + 1);
+      assert(iStatus == SUCCESS);
+      i = DT_preOrderTraversal(oNChild, d, i);
+    }
+  }
+  return i;
+}
+
+static size_t DT_preOrderStringTraveral(Dir_T n, size_t i, char *retString)
+{
+
+  size_t c;
+  File_T oFile;
+  Dir_t oNChild = NULL;
+
+  assert(retString != NULL);
+  if (n != NULL)
+  {
+    strcat(retString, Path_getPathname(Dir_getPath(n)));
+    strcat(retString, "\n");
+    i++;
+    for (c = 0; c < Dir_getNumFiles(n); c++)
+    {
+      (void)Dir_getFile(n, c, oFile);
+      strcat(retString, Path_getPathname(File_getPath(oFile)));
+      strcat(retString, "\n");
+      i++;
+    }
+    for (c = 0; c < Dir_getNumSubDirs(n); c++)
+    {
+      int iStatus;
+      oNChild = NULL;
+      iStatus = Dir_getSubDir(n, c, &oNChild);
+      assert(iStatus == SUCCESS);
+
+      i = DT_preOrderTraversal(oNChild, d, i);
+    }
+  }
+  return i;
+}
+
+/*
+  Alternate version of strlen that uses pulAcc as an in-out parameter
+  to accumulate a string length, rather than returning the length of
+  oNNode's path, and also always adds one addition byte to the sum.
+*/
+static void DT_strlenAccumulate(Node_T oNNode, size_t *pulAcc)
+{
+  assert(pulAcc != NULL);
+
+  if (oNNode != NULL)
+    *pulAcc += (Path_getStrLength(Node_getPath(oNNode)) + 1);
+}
+
 char *FT_toString(void)
 {
-  char *ret;
+  size_t totalStrlen = 1;
+  char *ret = NULL;
+
   if (!bIsInitialized)
     return NULL;
-  ret = (char *)malloc(2 * sizeof(char));
+
+  nodes = DynArray_new(ulCount);
+  (void)DT_preOrderTraversal(oNRoot, 0, totalStrlen);
+
+  ret = malloc(totalStrlen);
+  if (ret == NULL)
+  {
+    return NULL;
+  }
   *ret = '\0';
+
+  (void)DT_preOrderStringTraveral(oNRoot, 0, ret);
+
   return ret;
 }
