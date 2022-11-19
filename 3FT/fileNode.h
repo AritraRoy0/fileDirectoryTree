@@ -20,29 +20,35 @@ typedef struct fileNode *File_T;
 
 
 
-
+/*Compared the first file oNFirst and second file oNSecond lexographically */
 int File_compare(File_T oNFirst, File_T oNSecond);
+
+/*Compares the strings contained by the first and the second file.*/
 int File_compareString(const File_T oNFirst, const char *pcSecond);
+
+
+/*Gets the path of oNNode*/
 Path_T File_getPath(File_T oNNode);
+
+
+/*Gets the parent of oNNode*/
 Dir_T File_getParent(File_T oNNode);
 /*
-  Creates a new node in the Directory Tree, with path oPPath and
+  Creates a new file in the Directory Tree, with path oPPath and
   parent oNParent. Returns an int SUCCESS status and sets *poNResult
-  to be the new node if successful. Otherwise, sets *poNResult to NULL
+  to be the new file if successful. Otherwise, sets *poNResult to NULL
   and returns status:
   * MEMORY_ERROR if memory could not be allocated to complete request
   * CONFLICTING_PATH if oNParent's path is not an ancestor of oPPath
   * NO_SUCH_PATH if oPPath is of depth 0
                  or oNParent's path is not oPPath's direct parent
                  or oNParent is NULL but oPPath is not of depth 1
-  * ALREADY_IN_TREE if oNParent already has a child with this path
+  * ALREADY_IN_TREE if oNParent already has a file with this path
 */
 int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult);
 
 /*
-  Destroys and frees all memory allocated for the subtree rooted at
-  oNNode, i.e., deletes this node and all its descendents. Returns the
-  number of nodes deleted.
+  Destroys file represented by oNNode
 */
 int File_free(File_T oNNode);
 
@@ -50,8 +56,7 @@ int File_free(File_T oNNode);
 Path_T File_getPath(File_T oNNode);
 
 /*
-  Returns a the parent node of oNNode.
-  Returns NULL if oNNode is the root and thus has no parent.
+  Returns a the parent directory of oNNode.
 */
 Dir_T File_getParent(File_T oNNode);
 
@@ -63,7 +68,7 @@ int File_setContents(File_T oFile, void *contents, size_t length);
 /* Returns a pointer to the contents of a file */
 void *File_getContents(File_T oFile);
 
-
+/*Gets the length of the contents stored by the oFile.*/
 size_t File_getLength(File_T oFile);
 
 #endif
