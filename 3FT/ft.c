@@ -713,8 +713,7 @@ char *FT_toString(void)
   if (!bIsInitialized)
     return NULL;
 
-  nodes = DynArray_new(ulCount);
-  (void)DT_preOrderTraversal(oNRoot, 0, totalStrlen);
+  (void)DT_preOrderTraversal(oNRoot, 0, &totalStrlen);
 
   ret = malloc(totalStrlen);
   if (ret == NULL)
