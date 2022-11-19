@@ -671,7 +671,7 @@ static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
   return i;
 }
 
-static size_t DT_preOrderStringTraveral(Dir_T n, size_t i, char *retString)
+static size_t DT_preOrderStringTraversal(Dir_T n, size_t i, char *retString)
 {
 
   size_t c;
@@ -686,7 +686,7 @@ static size_t DT_preOrderStringTraveral(Dir_T n, size_t i, char *retString)
     i++;
     for (c = 0; c < Dir_getNumFiles(n); c++)
     {
-      (void)Dir_getFile(n, c, oFile);
+      (void)Dir_getFile(n, c, &oFile);
       strcat(retString, Path_getPathname(File_getPath(oFile)));
       strcat(retString, "\n");
       i++;
@@ -723,7 +723,7 @@ char *FT_toString(void)
   }
   *ret = '\0';
 
-  (void)DT_preOrderStringTraveral(oNRoot, 0, ret);
+  (void)DT_preOrderStringTraversal(oNRoot, 0, ret);
 
   return ret;
 }
