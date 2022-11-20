@@ -20,18 +20,18 @@ typedef struct fileNode *File_T;
 
 
 
-/*Compared the first file oNFirst and second file oNSecond lexographically */
+/*Compared the first file oNFirst and second file oNSecond lexographically, returns int */
 int File_compare(File_T oNFirst, File_T oNSecond);
 
-/*Compares the strings contained by the first and the second file.*/
+/*Compares the strings contained by the oNFirst and the pcSecond, returns int.*/
 int File_compareString(const File_T oNFirst, const char *pcSecond);
 
 
-/*Gets the path of oNNode*/
+/*Gets the path of oNNode, returns Path_T*/
 Path_T File_getPath(File_T oNNode);
 
 
-/*Gets the parent of oNNode*/
+/*Gets the parent of oNNode*, and returns as Dir_T/
 Dir_T File_getParent(File_T oNNode);
 /*
   Creates a new file in the Directory Tree, with path oPPath and
@@ -68,7 +68,7 @@ int File_setContents(File_T oFile, void *contents, size_t length);
 /* Returns a pointer to the contents of oFile as a void **/
 void *File_getContents(File_T oFile);
 
-/*Gets the length of the contents stored by the oFile as a size_t.*/
+/*Gets the length of the contents stored by the oFile as a size_t, returns size_t*/
 size_t File_getLength(File_T oFile);
 
 #endif

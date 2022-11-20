@@ -149,7 +149,7 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
     *poNResult = NULL;
     return iStatus;
   }
-
+/*finding the closest ancestor*/
   iStatus = FT_traversePath(oPPath, &oNFound);
   if (iStatus != SUCCESS)
   {
@@ -601,7 +601,7 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 /*
   Performs a pre-order traversal of the tree rooted at n,
   accumulating the total string length of the string 
-  representation of the entire FT.
+  representation of the entire FT returns size_t ulLength
 */
 
 static size_t FT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)

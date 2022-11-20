@@ -69,7 +69,7 @@ int Dir_getFile(Dir_T oNParent, size_t ulChildID,
 */
 Dir_T Dir_getParent(Dir_T oNNode);
 
-/* Returns the number of children that oNParent has after oNchild on ulIndex*/
+/* Returns the number of children that oNParent has after oNChild on ulIndex*/
 int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex);
 
 /*
@@ -81,7 +81,7 @@ int Dir_addSubDir(Dir_T oNParent, Dir_T oNChild, size_t ulIndex);
 int Dir_rmSubDir(Dir_T oNParent, size_t ulChildID,
                  Dir_T *poNResult);
 
-/* Returns the number of children that oNParent has after adding oNchild with ulIndex */
+/* Returns the number of children that oNParent has after adding oNChild with ulIndex */
 int Dir_addFile(Dir_T oNParent, File_T oNChild, size_t ulIndex);
 
 /*
@@ -94,13 +94,13 @@ int Dir_rmFile(Dir_T oNParent, size_t ulChildID,
                Dir_T *poNResult);
 
 
-/*It checks if oNParent has a child file with the given path oPPath*/
+/*It checks if oNParent has a child file with the given path oPPath with size pulChildID, returns boolean*/
 boolean Dir_hasFile(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
 /*It gets the dynamic array of the files that are stored in the oNParent, returns DynArray_T */
 DynArray_T Dir_getFiles(Dir_T oNParent);
 
-/*It checks if oNParent has a child directory with the given path oPPath*/
+/*It checks if oNParent has a child directory with the given path oPPath with size pulChildID, returns boolean*/
 boolean Dir_hasSubDir(Dir_T oNParent, Path_T oPPath, size_t *pulChildID);
 
 #endif
