@@ -112,7 +112,37 @@ disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
+Checking checkerDT.c
 
+   checkerDT.c: line 95: low priority:
+   A loop should consist of fewer than 35 lines;
+   this loop consists of 64 lines; consider refactoring
+
+   checkerDT.c: line 108: low priority:
+   A loop should consist of fewer than 35 lines;
+   this loop consists of 43 lines; consider refactoring
+
+   checkerDT.c: line 111: low priority:
+   This area is deeply nested at level 4, consider refactoring
+
+   checkerDT.c: line 120: low priority:
+   This area is deeply nested at level 4, consider refactoring
+
+   checkerDT.c: line 126: low priority:
+   This area is deeply nested at level 4, consider refactoring
+
+   checkerDT.c: line 144: low priority:
+   This area is deeply nested at level 4, consider refactoring
+
+   checkerDT.c: line 136: low priority:
+   This area is deeply nested at level 5, consider refactoring
+
+   checkerDT.c: line 146: low priority:
+   This area is deeply nested at level 4, consider refactoring
+
+
+THese are all very subjective andmay not apply to this case for sake of 
+having the most readable non-grossly-inefficient implementation.
 
 ------------------------------------------------------------------------
 What warnings does splint generate on your Part 3 code, and what are
@@ -120,7 +150,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on your Part 3 code, and what are
