@@ -28,14 +28,14 @@ static size_t ulCount;
 
 /* --------------------------------------------------------------------
 
-  The DT_traversePath and DT_findNode functions modularize the common
+  The FT_traversePath and FT_findDir FT_findFile functions modularize the common
   functionality of going as far as possible down an DT towards a path
   and returning either the node of however far was reached or the
   node if the full path was reached, respectively.
 */
 
 /*
-  Traverses the DT starting at the root as far as possible towards
+  Traverses the FT starting at the root as far as possible towards
   absolute path oPPath. If able to traverse, returns an int SUCCESS
   status and sets *poNFurthest to the furthest node reached (which may
   be only a prefix of oPPath, or even NULL if the root is NULL).
@@ -119,7 +119,7 @@ static int FT_traversePath(Path_T oPPath, Dir_T *poNFurthest)
 }
 
 /*
-  Traverses the DT to find a node with absolute path pcPath. Returns a
+  Traverses the DT to find a directory node with absolute path pcPath. Returns a
   int SUCCESS status and sets *poNResult to be the node, if found.
   Otherwise, sets *poNResult to NULL and returns with status:
   * INITIALIZATION_ERROR if the DT is not in an initialized state
@@ -180,7 +180,16 @@ static int FT_findDir(const char *pcPath, Dir_T *poNResult)
   *poNResult = oNFound;
   return SUCCESS;
 }
-
+/*
+  Traverses the DT to find a file node with absolute path pcPath. Returns a
+  int SUCCESS status and sets *poNResult to be the node, if found.
+  Otherwise, sets *poNResult to NULL and returns with status:
+  * INITIALIZATION_ERROR if the DT is not in an initialized state
+  * BAD_PATH if pcPath does not represent a well-formatted path
+  * CONFLICTING_PATH if the root's path is not a prefix of pcPath
+  * NO_SUCH_PATH if no node with pcPath exists in the hierarchy
+  * MEMORY_ERROR if memory could not be allocated to complete request
+ */
 static int FT_findFile(const char *pcPath, File_T *poNResult)
 {
 
@@ -191,6 +200,7 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
   Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
+  assert(poNResult != NULL);
 
   if (FT_containsDir(pcPath))
   {
@@ -242,17 +252,7 @@ static int FT_findFile(const char *pcPath, File_T *poNResult)
 
 /*--------------------------------------------------------------------*/
 
-/*
-  Removes the FT file with absolute path pcPath.
-  Returns SUCCESS if found and removed.
-  Otherwise, returns:
-  * INITIALIZATION_ERROR if the FT is not in an initialized state
-  * BAD_PATH if pcPath does not represent a well-formatted path
-  * CONFLICTING_PATH if the root exists but is not a prefix of pcPath
-  * NO_SUCH_PATH if absolute path pcPath does not exist in the FT
-  * NOT_A_FILE if pcPath is in the FT as a directory not a file
-  * MEMORY_ERROR if memory could not be allocated to complete request
-*/
+
 int FT_rmFile(const char *pcPath)
 {
 
@@ -285,12 +285,7 @@ int FT_init(void)
   return SUCCESS;
 }
 
-/*
-  Removes all contents of the data structure and
-  returns it to an uninitialized state.
-  Returns INITIALIZATION_ERROR if not already initialized,
-  and SUCCESS otherwise.
-*/
+
 int FT_destroy(void)
 {
 
@@ -337,17 +332,7 @@ int FT_rmDir(const char *pcPath)
   return SUCCESS;
 }
 
-/*
-   Inserts a new directory into the FT with absolute path pcPath.
-   Returns SUCCESS if the new directory is inserted successfully.
-   Otherwise, returns:
-   * INITIALIZATION_ERROR if the FT is not in an initialized state
-   * BAD_PATH if pcPath does not represent a well-formatted path
-   * CONFLICTING_PATH if the root exists but is not a prefix of pcPath
-   * NOT_A_DIRECTORY if a proper prefix of pcPath exists as a file
-   * ALREADY_IN_TREE if pcPath is already in the FT (as dir or file)
-   * MEMORY_ERROR if memory could not be allocated to complete request
-*/
+
 int FT_insertDir(const char *pcPath)
 {
   int iStatus;
@@ -464,10 +449,7 @@ int FT_insertDir(const char *pcPath)
   return SUCCESS;
 }
 
-/*
-  Returns TRUE if the FT contains a file with absolute path
-  pcPath and FALSE if not or if there is an error while checking.
-*/
+
 boolean FT_containsFile(const char *pcPath)
 {
   int iStatus;
@@ -479,13 +461,7 @@ boolean FT_containsFile(const char *pcPath)
   return (boolean)(iStatus == SUCCESS);
 }
 
-/*
-  Returns the contents of the file with absolute path pcPath.
-  Returns NULL if unable to complete the request for any reason.
 
-  Note: checking for a non-NULL return is not an appropriate
-  contains check, because the contents of a file may be NULL.
-*/
 void *FT_getFileContents(const char *pcPath)
 {
   File_T oFile;
@@ -500,12 +476,7 @@ void *FT_getFileContents(const char *pcPath)
   return File_getContents(oFile);
 }
 
-/*
-  Replaces current contents of the file with absolute path pcPath with
-  the parameter pvNewContents of size ulNewLength bytes.
-  Returns the old contents if successful. (Note: contents may be NULL.)
-  Returns NULL if unable to complete the request for any reason.
-*/
+
 void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
                              size_t ulNewLength)
 {
@@ -523,22 +494,7 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
   return retContent;
 }
 
-/*
-  Returns SUCCESS if pcPath exists in the hierarchy,
-  Otherwise, returns:
-  * INITIALIZATION_ERROR if the FT is not in an initialized state
-  * BAD_PATH if pcPath does not represent a well-formatted path
-  * CONFLICTING_PATH if the root's path is not a prefix of pcPath
-  * NO_SUCH_PATH if absolute path pcPath does not exist in the FT
-  * MEMORY_ERROR if memory could not be allocated to complete request
 
-  When returning SUCCESS,
-  if path is a directory: sets *pbIsFile to FALSE, *pulSize unchanged
-  if path is a file: sets *pbIsFile to TRUE, and
-                     sets *pulSize to the length of file's contents
-
-  When returning another status, *pbIsFile and *pulSize are unchanged.
-*/
 int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 {
   Dir_T foundDir;
@@ -546,6 +502,9 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
   int iStatus;
 
   assert(pcPath != NULL);
+  assert(pbIsFile != NULL);
+  assert(pulSize != NULL);
+
   iStatus = FT_findDir(pcPath, &foundDir);
   if (iStatus == SUCCESS)
   {
@@ -569,6 +528,8 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
+  assert(pvContents != NULL);
+  assert(ulLength != NULL);
 
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
@@ -639,11 +600,11 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
 
 /*
   Performs a pre-order traversal of the tree rooted at n,
-  inserting each payload to DynArray_T d beginning at index i.
-  Returns the next unused index in d after the insertion(s).
+  accumulating the total string length of the string 
+  representation of the entire FT.
 */
 
-static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
+static size_t FT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
 {
   size_t c;
   File_T oFile;
@@ -665,13 +626,20 @@ static size_t DT_preOrderTraversal(Dir_T n, size_t i, size_t *ulLength)
       iStatus = Dir_getSubDir(n, c, &oNChild);
       *ulLength += (Path_getStrLength(Dir_getPath(oNChild)) + 1);
       assert(iStatus == SUCCESS);
-      i = DT_preOrderTraversal(oNChild, i, ulLength);
+      i = FT_preOrderTraversal(oNChild, i, ulLength);
     }
   }
   return i;
 }
 
-static size_t DT_preOrderStringTraversal(Dir_T n, size_t i, char *retString)
+/*
+  Performs a pre-order traversal of the tree rooted at n,
+  accumulating the total string of the string 
+  representation of the entire FT in retString. also accumulates
+  the number of nodes passed through in i and returns it.
+*/
+
+static size_t FT_preOrderStringTraversal(Dir_T n, size_t i, char *retString)
 {
 
   size_t c;
@@ -698,7 +666,7 @@ static size_t DT_preOrderStringTraversal(Dir_T n, size_t i, char *retString)
       iStatus = Dir_getSubDir(n, c, &oNChild);
       assert(iStatus == SUCCESS);
 
-      i = DT_preOrderStringTraversal(oNChild, i, retString);
+      i = FT_preOrderStringTraversal(oNChild, i, retString);
     }
   }
   return i;
