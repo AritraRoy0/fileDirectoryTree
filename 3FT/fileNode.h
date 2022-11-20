@@ -48,27 +48,27 @@ Dir_T File_getParent(File_T oNNode);
 int File_new(Path_T oPPath, Dir_T oNParent, File_T *poNResult);
 
 /*
-  Destroys file represented by oNNode
+  Destroys file represented by oNNode, returns failure or success
 */
 int File_free(File_T oNNode);
 
-/* Returns the path object representing oNNode's absolute path. */
+/* Returns the path object representing oNNode's absolute path as a Path_T. */
 Path_T File_getPath(File_T oNNode);
 
 /*
-  Returns a the parent directory of oNNode.
+  Returns the parent directory of oNNode as Dir_tT
 */
 Dir_T File_getParent(File_T oNNode);
 
 
-/* sets the contents of a file according to void * contents and its
+/* sets the contents of oFile according to void * contents and its
 length size_t length. Finally returns SUCCESS or FAILURE */
 int File_setContents(File_T oFile, void *contents, size_t length);
 
-/* Returns a pointer to the contents of a file */
+/* Returns a pointer to the contents of oFile as a void **/
 void *File_getContents(File_T oFile);
 
-/*Gets the length of the contents stored by the oFile.*/
+/*Gets the length of the contents stored by the oFile as a size_t.*/
 size_t File_getLength(File_T oFile);
 
 #endif
