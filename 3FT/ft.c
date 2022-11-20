@@ -528,7 +528,6 @@ int FT_insertFile(const char *pcPath, void *pvContents, size_t ulLength)
   Path_T oPPath = NULL;
   File_T oFile;
   assert(pcPath != NULL);
-  assert(pvContents != NULL);
 
   /* validate pcPath and generate a Path_T for it */
   if (!bIsInitialized)
