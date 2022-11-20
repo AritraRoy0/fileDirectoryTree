@@ -681,7 +681,7 @@ char *FT_toString(void)
   if (!bIsInitialized)
     return NULL;
 
-  (void)DT_preOrderTraversal(oNRoot, 0, &totalStrlen);
+  (void)FT_preOrderTraversal(oNRoot, 0, &totalStrlen);
 
   ret = malloc(totalStrlen);
   if (ret == NULL)
@@ -690,7 +690,7 @@ char *FT_toString(void)
   }
   *ret = '\0';
 
-  (void)DT_preOrderStringTraversal(oNRoot, 0, ret);
+  (void)FT_preOrderStringTraversal(oNRoot, 0, ret);
 
   return ret;
 }
