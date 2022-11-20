@@ -65,19 +65,22 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
 }
 
 /*
-   Performs a pre-order traversal of the tree rooted at oNNode.
+   Performs a pre-order traversal of the tree rooted at oNNode with
+   total number of nodes ulCount. As the function runs, it accumulates
+   the total number of nodes encountered at any given point in time
+   at acCount.
    Returns FALSE if a broken invariant is found and
    returns TRUE otherwise.
 
-   You may want to change this function's return type or
-   parameter list to facilitate constructing your checks.
-   If you do, you should update this function comment.
+
 */
 static boolean CheckerDT_treeCheck(Node_T oNNode, size_t ulCount, size_t *acCount)
 {
    size_t ulIndex, ulIndex2;
    Node_T siblingNode;
    int pathCompare, iStatus;
+
+   assert(acCount != NULL);
 
    if (oNNode != NULL)
    {
