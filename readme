@@ -20,6 +20,16 @@ in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
 
+N
+The course's lectures.
+
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website. Such documents include the course's lecture slides and precept handouts.
+
+
 
 
 ------------------------------------------------------------------------
@@ -29,7 +39,15 @@ information given in the "Policies" web page (also available on armlab
 in the file ~cos217/AuthorizedSourcesList ) to this section of the
 readme file, and edit it as appropriate.
 
-None
+N
+The course's lectures.
+
+The course's precepts.
+
+The course's website.
+
+Documents that are referenced directly by the course's website. Such documents include the course's lecture slides and precept handouts.
+
 
 ------------------------------------------------------------------------
 Student 1: What unauthorized sources of information did you use to
@@ -86,7 +104,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on checkerDT.c, and what are your
@@ -109,9 +127,31 @@ What warnings does critTer generate on your Part 3 code, and what are
 your disagreements with them? Copy the critTer warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
+ ft.c: line 696: low priority:
+   A file should contain no more than 15 functions;
+   this file contains 17 functions
 
 
 
+   ft.c: line 608: medium priority:
+   Do you want to validate 'ulLength' through an assert?
+
+   ft.c: line 132: low priority:
+   This function definition probably needs more local comments
+
+   ft.c: line 194: low priority:
+   This function definition probably needs more local comments
+
+   ft.c: line 337: low priority:
+   This function definition probably needs more local comments
+
+   ft.c: line 524: low priority:
+   This function definition probably needs more local comments
+
+   ft.c: line 695: low priority:
+   A source code file should contain fewer than 500 lines;
+
+THese are subjective and may not apply to this case
 ------------------------------------------------------------------------
 For each of the five faulty BDT implementations required by Step
 1.5, identify the function where there is a bug. You do not have to
